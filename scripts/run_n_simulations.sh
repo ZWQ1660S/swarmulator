@@ -25,11 +25,21 @@ for (( i = 1; i <= $1; i++ )); do
 	# Move latest log to directory
 	fn=$(ls -t logs| head -n1)
 	if mv -f -- logs/log_$md.txt $d/log_$i.txt; then
+		mv -f -- logs/E_$md.csv $d/E_$i.csv
+		mv -f -- logs/H_$md.csv $d/H_$i.csv
+		mv -f -- logs/A_$md.csv $d/A_$i.csv
+		mv -f -- logs/pr_$md.csv $d/pr_$i.csv
+		mv -f -- logs/des_$md.csv $d/des_$i.csv
 		echo "Successfully moved file"
 	else
 		#if it doesn't work it's because it skipped a second
 		echo "Trying again........!" 
 		mv -f -- logs/log_$ma.txt $d/log_$i.txt
+		mv -f -- logs/E_$md.csv $d/E_$i.csv
+		mv -f -- logs/H_$md.csv $d/H_$i.csv
+		mv -f -- logs/A_$md.csv $d/A_$i.csv
+		mv -f -- logs/pr_$md.csv $d/pr_$i.csv
+		mv -f -- logs/des_$md.csv $d/des_$i.csv
 	fi
 
 done

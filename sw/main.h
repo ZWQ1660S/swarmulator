@@ -6,6 +6,7 @@
 #include "agent.h"
 #include "parameters.hxx" // Auto generated file at compile time
 #include "environment.h"
+#include "pagerank_estimator.h"
 
 extern uint nagents;            // Number of agents in the swarm
 extern std::vector<Agent *> s;  // Set up a vector of agents
@@ -15,6 +16,7 @@ extern bool program_running;    // True if the program is (or should be) running
 extern unique_ptr<parameters_t> param; // XML parameters from conf file
 extern float realtimefactor;    // Real time factor of simulation
 extern float rangesensor;       // How far each robot can sense
+extern pagerank_estimator pr;
 extern Environment environment;
 extern string identifier;
 

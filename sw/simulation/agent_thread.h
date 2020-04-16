@@ -94,6 +94,9 @@ void create_new_agent(const int &ID, const vector<float> &states)
   // Initiate a new agent
   mtx.lock();
   s.push_back(new AGENT(ID, states, 1.0 / param->simulation_updatefreq()));
+#ifdef ESTIMATOR
+  pr.extend(); // Extend estimator so that the new agent can also contribute
+#endif
   mtx.unlock();
 
   thread agent(start_agent_simulation, ID); // Initiate the thread that controls the agent

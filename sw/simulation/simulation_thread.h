@@ -68,6 +68,9 @@ void main_simulation_thread(int argc, char *argv[])
 #endif
   vector<float> t0 = rg.uniform_float_vector(nagents, -M_PI, M_PI);
 
+#ifdef ESTIMATOR
+  pr.init();
+#endif
 
   // Generate the agent models
 #ifdef SEQUENTIAL
@@ -104,6 +107,9 @@ void main_simulation_thread(int argc, char *argv[])
       if (param->time_limit() > 0.0) {
         if (simtime_seconds > param->time_limit()) { // Quit after a certain amount of time
           f.send(evaluate_fitness());
+#ifdef ESTIMATOR
+          pr.save();
+#endif
           program_running = false;
         }
       }
