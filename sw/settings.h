@@ -40,6 +40,4 @@
 #define NOISE_R 0 // STDEV of noise in range
 #define NOISE_B 0 // STDEV of noise in bearing
 
-#define FIFO_FILE "/tmp/swarmulator"
-
 #endif /*SETTINGS_H*/
