@@ -18,8 +18,8 @@ void pfsm_exploration::action_motion(const int &selected_action, float r, float 
 {
   // float m = 1.;
   // float ang[8] = {0., M_PI_4, M_PI_2, 3 * M_PI_4, M_PI, 5.*M_PI_4, 3 * M_PI_2, 7.*M_PI_4};
-  vector<float> ang = {-1.8, -1.6, -0.4, -0.2, 0.2, 0.4, 1.6, 1.8};
-  cout << selected_action << " " << ang[selected_action] << endl;
+  vector<float> ang = {-1.0, -0.7, -0.3, -0.1, 0.1, 0.3, 0.7, 1.0};
+  // cout << selected_action << " " << ang[selected_action] << endl;
   polar2cart(vmean, t + ang[selected_action], v_x, v_y);
 }
 
@@ -40,7 +40,7 @@ void pfsm_exploration::get_velocity_command(const uint8_t ID, float &v_x, float 
   vector<bool> state;
   vector<int> temp;
   t.assess_situation(ID, state, temp);
-  if (st != bool2int(state) || !moving || moving_timer == 1) { // on state change
+  if (st != bool2int(state) || !moving) { // on state change
     st = bool2int(state);
 #ifdef ESTIMATOR
     uint a = 0;
