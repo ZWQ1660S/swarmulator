@@ -31,10 +31,6 @@ ifeq ($(LOG),ON)
 CFLAGS += -DLOG
 endif
 
-ifeq ($(SEQUENTIAL),ON)
-CFLAGS += -DSEQUENTIAL
-endif
-
 # General parameters to include all cpp files and all subfolders
 INC_DIRS = $(shell find sw -maxdepth 50 -type d) # Max depth 50 layers. Should be enough.
 INC_PARAMS = $(foreach d, $(INC_DIRS), -I$d) #Each include folder must have a -I before it

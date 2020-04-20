@@ -16,7 +16,6 @@
       <xs:element name="logger_updatefreq" type="xs:integer"/>
       <xs:element name="policy" type="xs:string"/>
       <xs:element name="pipe" type="xs:string"/>
-      <!-- <xs:element name="sequential_interval" type="xs:float"/> -->
       <!-- xs:element name="parameter_name" type="xs:parametertype"/-->
     </xs:sequence>
   </xs:complexType>

@@ -11,5 +11,6 @@
 #include "behavior_tree_wheeled.h"
 #include "ndi_follower.h"
 #include "random_exploration.h"
+#include "pfsm_exploration.h"
 
 #endif /*INCLUDES_CONTROLLERS_H*/

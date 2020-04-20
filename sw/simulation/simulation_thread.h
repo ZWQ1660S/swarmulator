@@ -59,8 +59,8 @@ void main_simulation_thread(int argc, char *argv[])
   // Generate the random initial positions with (0,0) mean and 0.5 standard deviation
 #ifdef SEQUENTIAL
   vector<float> st = environment.start();
-  vector<float> x0 = rg.uniform_float_vector(nagents, st[1], st[1]);
-  vector<float> y0 = rg.uniform_float_vector(nagents, st[0], st[0]);
+  vector<float> x0 = rg.uniform_float_vector(nagents, st[1] - 0.1, st[1] + 0.1);
+  vector<float> y0 = rg.uniform_float_vector(nagents, st[0] - 0.1, st[0] + 0.1);
 #else
   float spread = environment.limits(); // default // TODO: Spread randomly within an arbitray arena
   vector<float> x0 = rg.uniform_float_vector(nagents, -spread, spread);
@@ -75,7 +75,7 @@ void main_simulation_thread(int argc, char *argv[])
   // Generate the agent models
 #ifdef SEQUENTIAL
   uint ID = 0;
-  float t_created = 0;
+  float t_created = -SEQUENTIAL - 1; // so that first agent is created at time - 9,9
 #else
   for (uint8_t ID = 0; ID < nagents; ID++) {
     vector<float> state = {x0[ID], y0[ID], 0.0, 0.0, 0.0, 0.0, t0[ID], 0.0};

@@ -184,7 +184,8 @@ inline static std::vector<std::vector<float>> read_matrix(const string filename)
       rows++;
     }
   } else {
-    terminalinfo::error_msg("Environment file not loaded.");
+    std::string msg = "Matrix file not loaded " + filename;
+    terminalinfo::error_msg(msg);
   }
   return matrix;
 }
@@ -207,7 +208,7 @@ inline static std::vector<float> read_array(const string filename)
       array.push_back(value);
     }
   } else {
-    terminalinfo::error_msg("Environment file not loaded.");
+    terminalinfo::error_msg("Array file not loaded: " + filename);
   }
   return array;
 }
