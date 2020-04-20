@@ -83,7 +83,6 @@ void main_simulation_thread(int argc, char *argv[])
   }
 #endif
 
-
   // Keep global clock running.
   // This is only used by the animation and the logger.
   // The robots operate by their own detached thread clock.
@@ -106,10 +105,12 @@ void main_simulation_thread(int argc, char *argv[])
       // Runtime finish evolution
       if (param->time_limit() > 0.0) {
         if (simtime_seconds > param->time_limit()) { // Quit after a certain amount of time
+          mtx.lock(); // Done
           f.send(evaluate_fitness());
 #ifdef ESTIMATOR
           pr.save();
 #endif
+          mtx.unlock();
           program_running = false;
         }
       }
