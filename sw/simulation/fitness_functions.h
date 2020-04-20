@@ -106,9 +106,9 @@ inline static float evaluate_fitness()
   float f;
   // f = mean_dist_to_one_neighbor(0);
   // f = mean_number_of_neighbors();
-  f = 1. / (float)number_of_clusters();
+  // f = 1. / (float)number_of_clusters(); // use 1./ to minimize (e.g. for aggregation)
   // f = mean_dist_to_neighbors();
-  // f = 1. / mean_dist_to_all(); //  use 1. / for aggregation instead of separation
+  f = 1. / mean_dist_to_all(); //  use 1./ to minimize
   // connectivity_check(f);
   return f;
 }
