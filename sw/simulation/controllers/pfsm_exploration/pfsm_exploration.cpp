@@ -6,13 +6,7 @@
 pfsm_exploration::pfsm_exploration(): t(8)
 {
   string p = param->policy();
-  if (!strcmp(p.c_str(), "")) {
-    for (size_t i = 0; i < 256; i++) {
-      policy[i] = {0.125, 0.125, 0.125, 0.125, 0.125, 0.125, 0.125};
-    }
-  } else {
-    policy = read_matrix(p);
-  }
+  policy = read_matrix(p);
   timelim = 5. * param->simulation_updatefreq();
   moving_timer = rg.uniform_int(0, timelim);
   vmean = 0.5; // Adjustment velocity

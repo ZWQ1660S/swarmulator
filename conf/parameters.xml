@@ -21,6 +21,6 @@
   <logger_updatefreq>1</logger_updatefreq>
   <!-- Additional parameters -->
   <policy>./conf/state_action_matrices/exploration_policy_random.txt</policy>
-  <pipe>/tmp/swarmulator_34383</pipe>
+  <pipe>/tmp/swarmulator_43628</pipe>
   <!--new_parameter_name>default value</new_parameter_name-->
 </parameters>
