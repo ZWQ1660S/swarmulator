@@ -3,7 +3,7 @@
 #include "auxiliary.h"
 #include <algorithm> // std::find
 
-pfsm_exploration::pfsm_exploration(): t(8)
+pfsm_exploration::pfsm_exploration(): t(4)
 {
   string p = param->policy();
   policy = read_matrix(p);
@@ -18,10 +18,12 @@ pfsm_exploration::pfsm_exploration(): t(8)
 void pfsm_exploration::action_motion(const int &selected_action, float r, float t, float &v_x, float &v_y)
 {
   // float m = 1.;
-  float ang[8] = {0., M_PI_4, M_PI_2, 3 * M_PI_4, M_PI, 5.*M_PI_4, 3 * M_PI_2, 7.*M_PI_4};
+  float ang[8] = {0.0, 0.1, 0.2};
   // vector<float> ang = {-1.0, -0.7, -0.3, -0.1, 0.1, 0.3, 0.7, 1.0};
-  // cout << selected_action << " " << ang[selected_action] << endl;
-  polar2cart(vmean, t + ang[selected_action], v_x, v_y);
+  cout << vmean << " " << selected_action << " " << ang[selected_action] << endl;
+  // polar2cart(vmean, ang[selected_action], v_x, v_y);
+  v_x = vmean;
+  v_y = ang[selected_action];
 }
 
 void pfsm_exploration::state_action_lookup(const int ID, uint state_index)
@@ -37,12 +39,12 @@ void pfsm_exploration::get_velocity_command(const uint8_t ID, float &v_x, float 
 {
   v_x = 0.0;
   v_y = 0.0;
-  get_lattice_motion_all(ID, v_x, v_y);
+  // get_lattice_motion_all(ID, v_x, v_y);
 
   vector<bool> state;
   vector<int> temp;
   t.assess_situation(ID, state, temp);
-  if (st != bool2int(state) || !moving) { // on state change
+  if (st != bool2int(state) || moving_timer == 1) { // on state change
     st = bool2int(state);
 #ifdef ESTIMATOR
     uint a = 0;
@@ -56,9 +58,10 @@ void pfsm_exploration::get_velocity_command(const uint8_t ID, float &v_x, float 
   }
   increase_counter_to_value(moving_timer, timelim, 1);
 
-  moving = true;
   v_x += vx_ref;
   v_y += vy_ref;
+  wall_avoidance_t(ID, v_x, v_y);
 
-  wall_avoidance(ID, v_x, v_y);
+  moving = true;
+  // cout << v_x << " " << v_y << endl;
 }

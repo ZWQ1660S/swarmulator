@@ -41,11 +41,13 @@ void main_loop_function()
 
   // Draw all robots
   uint r = s.size();
-  for (uint8_t ID = 0; ID < r; ID++) {
-    // Input: ID, p_x global, p_y global, orientation global
-    drawer.agent(ID, s[ID]->state.at(0), s[ID]->state.at(1), s[ID]->orientation);
-    // Input: ID, p_x global, p_y global, v_x global, v_y global
-    drawer.velocity_arrow(ID,  s[ID]->state.at(0), s[ID]->state.at(1), s[ID]->state.at(2), s[ID]->state.at(3));
+  if (r > 0) {
+    for (uint8_t ID = 0; ID < r; ID++) {
+      // Input: ID, p_x global, p_y global, orientation global
+      drawer.agent(ID, s[ID]->state.at(0), s[ID]->state.at(1), s[ID]->orientation);
+      // Input: ID, p_x global, p_y global, v_x global, v_y global
+      drawer.velocity_arrow(ID,  s[ID]->state.at(0), s[ID]->state.at(1), s[ID]->state.at(2), s[ID]->state.at(3));
+    }
   }
 
   // Sleep until the next time-step according to the update frequency parameter
