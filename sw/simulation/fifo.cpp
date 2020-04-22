@@ -9,8 +9,8 @@
 
 fifo::fifo()
 {
-  fifo::open(param->pipe());
-  terminalinfo::debug_msg("Pipe set to " + param->pipe());
+  fifo::open("/tmp/swarmulator_" + param->id());
+  terminalinfo::debug_msg("Pipe set to " + param->id());
 };
 
 void fifo::open(std::string file)

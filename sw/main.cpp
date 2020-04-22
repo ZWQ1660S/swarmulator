@@ -43,7 +43,7 @@ float simtime_seconds = 0; // Initial simulation time
 float rangesensor = 1.8; // How far each robot can sense
 bool program_running  = false; // Program running, initiated false until the beginning
 Environment environment; // Environment walls
-pagerank_estimator pr(255);
+pagerank_estimator pr(16);
 string identifier; // Log name identifier
 
 /**
@@ -54,6 +54,12 @@ string identifier; // Log name identifier
 int main(int argc, char *argv[])
 {
   program_running = true; // Program is running
+
+  if (!strcmp(param->id().c_str(), "")) {
+    identifier = currentDateTime(); // declared in main.h
+  } else {
+    identifier = param->id();
+  }
 
   // Start simulation thread
   thread simulation(main_simulation_thread, argc, argv);

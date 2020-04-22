@@ -70,14 +70,9 @@ void pagerank_estimator::print(void)
 
 void pagerank_estimator::save(void)
 {
-  // fmat<uint>::write_to_csv("logs/E_" + identifier + ".csv", E, n_states, n_states);
-  // fmat<uint>::write_to_csv("logs/H_" + identifier + ".csv", H, n_states, n_states);
-  // fmat<uint>::write_to_csv("logs/A_" + identifier + ".csv", A, n_states, n_states);
-  // fmat<uint>::write_to_csv("logs/des_" + identifier + ".csv", des, 1, n_states);
-  // fmat<uint>::write_to_csv("logs/pr_" + identifier + ".csv", pr, 1, n_states);
-  fmat<uint>::write_to_csv("logs/E.csv", E, n_states, n_states);
-  fmat<uint>::write_to_csv("logs/H.csv", H, n_states, n_states);
-  fmat<uint>::write_to_csv("logs/A.csv", A, n_states, n_states);
-  fmat<uint>::write_to_csv("logs/des.csv", des, 1, n_states);
-  fmat<uint>::write_to_csv("logs/pr.csv", pr, 1, n_states);
+  fmat<uint>::write_to_csv("logs/E_" + identifier + ".csv", E, n_states, n_states);
+  fmat<uint>::write_to_csv("logs/H_" + identifier + ".csv", H, n_states, n_states);
+  fmat<uint>::write_to_csv("logs/A_" + identifier + ".csv", A, n_states, n_states);
+  fmat<uint>::write_to_csv("logs/des_" + identifier + ".csv", des, 1, n_states);
+  fmat<uint>::write_to_csv("logs/pr_" + identifier + ".csv", pr, 1, n_states);
 }

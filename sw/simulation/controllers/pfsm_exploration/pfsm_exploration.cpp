@@ -18,7 +18,7 @@ pfsm_exploration::pfsm_exploration(): t(4)
 void pfsm_exploration::action_motion(const int &selected_action, float r, float t, float &v_x, float &v_y)
 {
   // float m = 1.;
-  float ang[8] = {0.0, 0.1, 0.2};
+  float ang[8] = {-0.6, -0.3, 0.0, 0.3, 0.6};
   // vector<float> ang = {-1.0, -0.7, -0.3, -0.1, 0.1, 0.3, 0.7, 1.0};
   cout << vmean << " " << selected_action << " " << ang[selected_action] << endl;
   // polar2cart(vmean, ang[selected_action], v_x, v_y);
@@ -29,21 +29,21 @@ void pfsm_exploration::action_motion(const int &selected_action, float r, float 
 void pfsm_exploration::state_action_lookup(const int ID, uint state_index)
 {
   vector<float> p = policy[state_index];
-  // fmat<float>::print(1, 8, p, "p");
-  if (!moving) {
-    selected_action = rg.discrete_int(p);
-  }
+  cout << state_index << endl;
+  fmat<float>::print(1, 8, p, "p");
+  selected_action = rg.discrete_int(p);
 }
 
 void pfsm_exploration::get_velocity_command(const uint8_t ID, float &v_x, float &v_y)
 {
   v_x = 0.0;
   v_y = 0.0;
-  // get_lattice_motion_all(ID, v_x, v_y);
+  get_lattice_motion_all(ID, v_x, v_y);
 
   vector<bool> state;
   vector<int> temp;
   t.assess_situation(ID, state, temp);
+  cout << (int)ID << endl; fmat<bool>::print(1, 4, state, "st");
   if (st != bool2int(state) || moving_timer == 1) { // on state change
     st = bool2int(state);
 #ifdef ESTIMATOR
@@ -63,5 +63,4 @@ void pfsm_exploration::get_velocity_command(const uint8_t ID, float &v_x, float 
   wall_avoidance_t(ID, v_x, v_y);
 
   moving = true;
-  // cout << v_x << " " << v_y << endl;
 }

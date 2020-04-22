@@ -56,6 +56,10 @@ void main_simulation_thread(int argc, char *argv[])
   get_number_of_agents(argc, argv); // Read the number of agents from the argument input
   random_generator rg;
 
+#ifdef ESTIMATOR
+  pr.init();
+#endif
+
   // Generate the random initial positions with (0,0) mean and 0.5 standard deviation
   if (nagents > 0) {
 #ifdef SEQUENTIAL
@@ -78,12 +82,8 @@ void main_simulation_thread(int argc, char *argv[])
       create_new_agent(ID, state); // Create agent
     }
 #endif
-
   }
 
-#ifdef ESTIMATOR
-  pr.init();
-#endif
   // Keep global clock running.
   // This is only used by the animation and the logger.
   // The robots operate by their own detached thread clock.

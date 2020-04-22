@@ -124,6 +124,6 @@ void Controller::wall_avoidance_t(const uint8_t ID, float &v, float &dpsitheta)
   if (test1 || test2) {
     v = 0.;
     dpsitheta = 0.11;
-    cout << "Wallll" << endl;
+    // cout << "Wallll" << endl;
   }
 }
