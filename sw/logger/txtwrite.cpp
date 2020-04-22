@@ -25,6 +25,9 @@ void txtwrite::txtwrite_state(ofstream &logfile)
     for (uint8_t j = 0; j < 4; j++) {
       logfile << state_buff[i]->state.at(j) << " ";
     }
+#ifdef ESTIMATOR
+    logfile << pr.fitness << " " << pr.s_kp1[i];
+#endif
     logfile << endl;
   }
 }

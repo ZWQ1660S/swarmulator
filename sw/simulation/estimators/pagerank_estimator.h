@@ -10,7 +10,7 @@ class pagerank_estimator
 public:
   vector<uint> H, E, A, des, pr, s_k, s_kp1;
   uint n_states;
-  float fitness;
+  float fitness, fitness_max;
 
   /**
    * @brief Construct a new pagerank estimator object.

@@ -3,7 +3,7 @@
   <!-- Simulation -->
   <simulation_updatefreq>20</simulation_updatefreq>
   <simulation_realtimefactor>50</simulation_realtimefactor>
-  <time_limit>10000</time_limit>
+  <time_limit>100</time_limit>
   <!-- (seconds). Use time_limit > 0 to set a limit -->
   <environment>square</environment>
   <!-- See the folder conf/environments/ for available environments. 
@@ -21,6 +21,6 @@
   <logger_updatefreq>20</logger_updatefreq>
   <!-- Additional parameters -->
   <policy>./conf/state_action_matrices/exploration_policy_random.txt</policy>
-  <id></id>
+  <id>21928</id>
   <!--new_parameter_name>default value</new_parameter_name-->
 </parameters>
