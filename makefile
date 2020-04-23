@@ -5,13 +5,11 @@
 TARGET = swarmulator # application name
 BUILD_FOLDER = build
 SRC_FOLDER = sw
-# Use these to give input parameters
+
 CONTROLLER?=controller_aggregation
 AGENT?=particle
 
 # Compiler parameters
-# Thanks to the help from
-# https://www.cs.swarthmore.edu/~newhall/unixhelp/howto_makefiles.html#creating
 #  -g    adds debugging information to the executable file
 #  -Wall turns on most, but not all, compiler warnings
 
@@ -56,8 +54,6 @@ INC = -I. -I$(SRC_FOLDER) -I$(BUILD_FOLDER) $(INC_PARAMS) # All include paths
 MAKE = $(CC) $(CFLAGS) $(INC)
 OBJECTS_CPP=$(SOURCES_CPP:%.cpp=$(BUILD_FOLDER)/%.o)
 OBJECTS_C=$(SOURCES_C:%.c=$(BUILD_FOLDER)/%.o)
-
-$(info $(SOURCES_CPP))
 
 # Build the executable
 # Using @...; suppresses the output of the arguments

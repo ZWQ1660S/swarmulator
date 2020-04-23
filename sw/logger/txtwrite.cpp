@@ -24,11 +24,11 @@ void txtwrite::txtwrite_state(ofstream &logfile)
             << i + 1 << " "; // ID
     // log states
     for (uint8_t j = 0; j < 2; j++) {
-      logfile << std::setprecision(4) << state_buff[i]->state.at(j) << " ";
+      logfile << state_buff[i]->state.at(j) << " ";
     }
 #ifdef ESTIMATOR
-    // logfile << pr.fitness << " " << pr.s_kp1[i];
-    logfile << pr.s_kp1[i];
+    logfile << pr.s_kp1[i] << " " << pr.fitness;
+    // logfile << pr.s_kp1[i];
 #endif
     logfile << endl;
   }
