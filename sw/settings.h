@@ -24,13 +24,13 @@
 // #define CONTROLLER behavior_tree // Controller with behvaior_tree_aggregation
 // #define CONTROLLER behavior_tree_wheeled // Controller with Qf
 
-#define CONTROLLER controller_aggregation // Aggregation controller (needs walls!)
+// #define CONTROLLER controller_aggregation // Aggregation controller (needs walls!)
 // #define CONTROLLER pfsm_exploration
 
 /**
  * Select the agent type that you want to use by uncommenting it
  */
-#define AGENT particle    // Accelerated particles
+// #define AGENT particle    // Accelerated particles
 // #define AGENT particle_oriented    // Accelerated particle with orientation
 // #define AGENT wheeled    // Wheeled robot
 
