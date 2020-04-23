@@ -4,6 +4,7 @@
 #include <sstream>
 #include "agent.h"
 #include "main.h"
+#include <iomanip>      // std::setprecision
 
 txtwrite::txtwrite() {}
 
@@ -22,11 +23,12 @@ void txtwrite::txtwrite_state(ofstream &logfile)
     logfile << t.str() << " " // time
             << i + 1 << " "; // ID
     // log states
-    for (uint8_t j = 0; j < 4; j++) {
-      logfile << state_buff[i]->state.at(j) << " ";
+    for (uint8_t j = 0; j < 2; j++) {
+      logfile << std::setprecision(4) << state_buff[i]->state.at(j) << " ";
     }
 #ifdef ESTIMATOR
-    logfile << pr.fitness << " " << pr.s_kp1[i];
+    // logfile << pr.fitness << " " << pr.s_kp1[i];
+    logfile << pr.s_kp1[i];
 #endif
     logfile << endl;
   }

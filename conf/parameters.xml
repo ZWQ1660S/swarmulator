@@ -18,9 +18,9 @@
   <!-- Start up zoom, bounded -90 and 9 -->
   <animation_updatefreq>25</animation_updatefreq>
   <!-- Logger -->
-  <logger_updatefreq>20</logger_updatefreq>
+  <logger_updatefreq>2</logger_updatefreq>
   <!-- Additional parameters -->
-  <policy>./conf/state_action_matrices/exploration_policy_random.txt</policy>
-  <id>21928</id>
+  <policy/>
+  <id>92901</id>
   <!--new_parameter_name>default value</new_parameter_name-->
 </parameters>
