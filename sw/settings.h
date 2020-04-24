@@ -6,7 +6,7 @@
 #define ESTIMATOR
 // #define REMAIN_CONNECTED // Check that the swarm remains connected (only if logging)
 // #define CHECK_HAPPY // Check whether the global goal is completed  (only if logging)
-#define COMMAND_LOCAL 1  // use COMMAND_LOCAL for local commands
+// #define COMMAND_LOCAL 1  // use COMMAND_LOCAL for local commands
 
 /**
  * Noise in relative sensing

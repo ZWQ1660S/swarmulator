@@ -15,7 +15,7 @@ Controller::Controller()
   _ddes_x = 1.0; // Desired distance at North
   _ddes_y = 1.0; // Desired distance at East
   _kr = 1.0;     // Repulsion gain
-  _ka = 1.0;     // Attraction gain
+  _ka = 5.0;     // Attraction gain
   saturation = false; // Controller saturation
 };
 
