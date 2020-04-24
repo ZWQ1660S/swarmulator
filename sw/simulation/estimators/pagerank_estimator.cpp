@@ -14,7 +14,6 @@ void pagerank_estimator::init()
   s_k.assign(nagents, 0);
   s_kp1.assign(nagents, 0);
   fitness = 0;
-  fitness_max = 0;
 }
 
 void pagerank_estimator::extend(void)
@@ -49,14 +48,17 @@ void pagerank_estimator::update_G(const uint &ID, const uint &action)
 
 void pagerank_estimator::update_des(void)
 {
-  fitness = evaluate_fitness();
-  if (fitness >= fitness_max) {
-    fitness_max = fitness;
-    for (uint i = 0; i < n_states; i++) {
-      des[i] = std::count(s_kp1.begin(), s_kp1.end(), i);
+  if (s.size() == nagents) { // Guard or it will start with bogus values
+    float f = evaluate_fitness();
+    if (f >= fitness) {
+      fitness = f;
+      for (uint i = 0; i < n_states; i++) {
+        des[i] = std::count(s_kp1.begin(), s_kp1.end(), i);
+      }
     }
+    // cout << fitness << endl;
+    // fmat<uint>::print(1, n_states, des, "fitness");
   }
-  // fmat<uint>::print(1, n_states, des, "fitness");
 }
 
 void pagerank_estimator::print(void)

@@ -13,7 +13,7 @@ controller_aggregation::controller_aggregation() : Controller()
   // motion_p = {0.991355, 0.984845, 0.007304, 0.000783, 0.004238, 0.001033, 0.007088};
   string p = param->policy();
   if (!strcmp(p.c_str(), "")) {
-    motion_p = {0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5};
+    motion_p = {1.0, 0.0, 1.0, 1.0, 0.0, 0.14, 0.14};
   } else {
     motion_p = read_array(p);
   }
