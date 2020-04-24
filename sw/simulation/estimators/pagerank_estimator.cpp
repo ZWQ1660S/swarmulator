@@ -56,7 +56,7 @@ void pagerank_estimator::update_des(void)
       des[i] = std::count(s_kp1.begin(), s_kp1.end(), i);
     }
   }
-  fmat<uint>::print(1, n_states, des, "fitness");
+  // fmat<uint>::print(1, n_states, des, "fitness");
 }
 
 void pagerank_estimator::print(void)
