@@ -18,8 +18,8 @@ pfsm_exploration::pfsm_exploration(): t(4)
 void pfsm_exploration::action_motion(const int &selected_action, float r, float t, float &v_x, float &v_y)
 {
   // float m = 1.;
-  float ang[8] = {-0.6, -0.3, 0.0, 0.3, 0.6};
-  // vector<float> ang = {-1.0, -0.7, -0.3, -0.1, 0.1, 0.3, 0.7, 1.0};
+  // float ang[8] = {-0.6, -0.3, 0.0, 0.3, 0.6};
+  vector<float> ang = {-1.0, -0.7, -0.3, -0.1, 0.1, 0.3, 0.7, 1.0};
   cout << vmean << " " << selected_action << " " << ang[selected_action] << endl;
   // polar2cart(vmean, ang[selected_action], v_x, v_y);
   v_x = vmean;
