@@ -33,12 +33,18 @@
  * @param argc Number of arguments from terminal input when launching swarmulator
  * @param argv Content of arguments from terminal input when launching swarmulator
  */
-void get_number_of_agents(int argc, char *argv[])
+void read_argv(int argc, char *argv[])
 {
   if (argc <= 1) {
     terminalinfo::error_msg("Please specify the number of agents.");
   } else {
     nagents = stoi(argv[1]);
+  }
+
+  if (argc > 2) {
+    string s;
+    s += argv[2];
+    param->id() = s;
   }
 }
 
@@ -53,7 +59,7 @@ void get_number_of_agents(int argc, char *argv[])
 void main_simulation_thread(int argc, char *argv[])
 {
   terminalinfo::info_msg("Simulation started.");
-  get_number_of_agents(argc, argv); // Read the number of agents from the argument input
+  read_argv(argc, argv); // Read the number of agents from the argument input
   random_generator rg;
 
 #ifdef ESTIMATOR
