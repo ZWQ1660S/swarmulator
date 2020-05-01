@@ -58,6 +58,7 @@ void main_loop_function()
   glutSwapBuffers();
 
   user_interaction(); // Activate interactive functions (mouse + keyboard), important: use this before draw functions!
+  if (!program_running) {terminate();}
 }
 
 /**

@@ -42,6 +42,8 @@ void run_logger(ofstream &logfile, string filename)
   // Wait
   uint t_wait = (int)1e6 / (param->logger_updatefreq() * param->simulation_realtimefactor());
   this_thread::sleep_for(chrono::microseconds(t_wait));
+
+  if (!program_running) {terminate();}
 }
 
 /**

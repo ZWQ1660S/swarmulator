@@ -40,12 +40,6 @@ void read_argv(int argc, char *argv[])
   } else {
     nagents = stoi(argv[1]);
   }
-
-  if (argc > 2) {
-    string s;
-    s += argv[2];
-    param->id() = s;
-  }
 }
 
 /**

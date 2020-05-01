@@ -19,7 +19,9 @@ vector<float> particle::state_update(vector<float> state)
 
   float v_x = 0.0;
   float v_y = 0.0;
+  mtx.lock();
   controller->get_velocity_command(ID, v_x, v_y);
+  mtx.unlock();
   controller->saturate(v_x);
   controller->saturate(v_y);
   moving = controller->moving;

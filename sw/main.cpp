@@ -61,25 +61,23 @@ int main(int argc, char *argv[])
     identifier = param->id();
   }
 
-  // Start simulation thread
-  thread simulation(main_simulation_thread, argc, argv);
-  simulation.detach();
+  if (argc > 2) {
+    string s;
+    s += argv[2];
+    identifier = s;
+  }
 
 #ifdef ANIMATION
-  // Start animation thread
   thread animation(main_animation_thread);
   animation.detach();
 #endif
 
 #ifdef LOG
-  // Start logger thread
   thread logger(main_logger_thread);
   logger.detach();
 #endif
 
-  // Keep the program running
-  while (program_running) {
-  };
+  main_simulation_thread(argc, argv);
 
   // Exit
   terminalinfo::info_msg("Swarmulator exiting");
