@@ -67,6 +67,8 @@ int main(int argc, char *argv[])
     identifier = s;
   }
 
+  // thread simulation(main_simulation_thread,argc, argv);
+  // simulation.detach();
 #ifdef ANIMATION
   thread animation(main_animation_thread);
   animation.detach();
@@ -76,7 +78,6 @@ int main(int argc, char *argv[])
   thread logger(main_logger_thread);
   logger.detach();
 #endif
-
   main_simulation_thread(argc, argv);
 
   // Exit

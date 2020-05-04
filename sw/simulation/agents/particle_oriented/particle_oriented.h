@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <iostream>
 #include "agent.h"
+#define COMMAND_LOCAL 1  // use COMMAND_LOCAL for local commands
 
 using namespace std;
 
