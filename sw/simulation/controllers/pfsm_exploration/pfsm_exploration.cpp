@@ -43,7 +43,7 @@ void pfsm_exploration::get_velocity_command(const uint8_t ID, float &v_x, float 
   vector<bool> state;
   vector<int> temp;
   t.assess_situation(ID, state, temp);
-  cout << (int)ID << endl; fmat<bool>::print(1, 4, state, "st");
+  // cout << (int)ID << endl; fmat<bool>::print(1, 4, state, "st");
   if (st != bool2int(state) || moving_timer == 1) { // on state change
     st = bool2int(state);
 #ifdef ESTIMATOR
