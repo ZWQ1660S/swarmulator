@@ -26,8 +26,9 @@ void run_agent_simulation_step(const int &ID)
   while (program_running) {
     // Update the position of the agent in the simulation
     // auto start = chrono::steady_clock::now();
+    mtx.lock();
     vector<float> s_n = s.at(ID)->state_update(s.at(ID)->state); // State update
-
+    mtx.unlock();
     /****** Wall physics engine ********/
     // Check if hitting a wall
     vector<float> test = s_n;
