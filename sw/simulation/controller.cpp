@@ -14,8 +14,8 @@ Controller::Controller()
 {
   _ddes_x = 1.0; // Desired distance at North
   _ddes_y = 1.0; // Desired distance at East
-  _kr = 0.1; // Repulsion gain
-  _ka = 0.0; // Attraction gain
+  _kr = 1.0; // Repulsion gain
+  _ka = 0.1; // Attraction gain
   saturation = false; // Controller saturation
 };
 
@@ -70,7 +70,7 @@ void Controller::get_lattice_motion_all(const int &ID, float &v_x, float &v_y)
 
 float Controller::get_attraction_velocity(float u)
 {
-  return f_attraction(u) + f_repulsion(u);
+  return f_attraction_equilibrium(u, 1.5) + f_repulsion(u);
 }
 
 float Controller::f_repulsion(float u)
