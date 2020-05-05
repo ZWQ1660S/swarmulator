@@ -8,7 +8,7 @@ pfsm_exploration::pfsm_exploration(): t(4)
   string p = param->policy();
   policy = read_matrix(p);
   timelim = 5. * param->simulation_updatefreq();
-  moving_timer = rg.uniform_int(0, timelim);
+  moving_timer = 1; //rg.uniform_int(0, timelim);
   vmean = 0.5; // Adjustment velocity
   moving = false;
   selected_action = 3;
@@ -44,7 +44,7 @@ void pfsm_exploration::get_velocity_command(const uint8_t ID, float &v_x, float 
   vector<int> temp;
   t.assess_situation(ID, state, temp);
   // cout << (int)ID << endl; fmat<bool>::print(1, 4, state, "st");
-  if (st != bool2int(state) || moving_timer == 1) { // on state change
+  if (st != bool2int(state) || (moving_timer == 1)) { // on state change
     st = bool2int(state);
 #ifdef ESTIMATOR
     uint a = 0;
@@ -63,4 +63,5 @@ void pfsm_exploration::get_velocity_command(const uint8_t ID, float &v_x, float 
   wall_avoidance_t(ID, v_x, v_y);
 
   moving = true;
+  // moving_timer = 2;
 }

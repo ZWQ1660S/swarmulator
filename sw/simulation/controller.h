@@ -118,8 +118,8 @@ public:
    * @param v_x The desired velocity in v_x (amended in this function)
    * @param v_y The desired velocity in v_y (amended in this function)
    */
-  void wall_avoidance(const uint8_t ID, float &v_x, float &v_y);
-  void wall_avoidance_t(const uint8_t ID, float &v_x, float &v_y);
+  bool wall_avoidance(const uint8_t ID, float &v_x, float &v_y);
+  bool wall_avoidance_t(const uint8_t ID, float &v_x, float &v_y);
 };
 
 

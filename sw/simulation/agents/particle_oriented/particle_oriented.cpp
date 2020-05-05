@@ -44,7 +44,7 @@ vector<float> particle_oriented::state_update(vector<float> state)
   orientation = state.at(6);
 
   // Acceleration control
-  float ka = 10;
+  float ka = 2;
   state.at(4) = ka * (vx_global - state[2]); // Acceleration global frame
   state.at(5) = ka * (vy_global - state[3]); // Acceleration global frame
   moving = controller->moving;

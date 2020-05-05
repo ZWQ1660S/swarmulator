@@ -33,7 +33,7 @@ void run_agent_simulation_step(const int &ID)
     vector<float> test = s_n;
     float r_temp, ang_temp, vx_temp, vy_temp;
     cart2polar(s_n[2], s_n[3], r_temp, ang_temp); // direction of velocity
-    polar2cart(2, ang_temp, vx_temp, vy_temp); // use rangesensor to sense walls
+    polar2cart(r_temp, ang_temp, vx_temp, vy_temp); // use rangesensor to sense walls
     test[0] += vx_temp;
     test[1] += vy_temp;
     if (!environment.sensor(ID, s.at(ID)->state, test, ang_temp)) { // No wall --> Update the dynamics
@@ -46,6 +46,7 @@ void run_agent_simulation_step(const int &ID)
       s.at(ID)->state[3] = 0.0; // v_y
       s.at(ID)->state[4] = 0.0; // a_x
       s.at(ID)->state[5] = 0.0; // a_y
+      cout << int(ID) << " not moving " << s_n[2] << " " << s_n[3] << endl;
       s.at(ID)->controller->moving = false; // Not moving
       mtx.unlock();
     }
