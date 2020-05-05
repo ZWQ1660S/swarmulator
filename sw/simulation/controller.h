@@ -65,6 +65,15 @@ public:
   float f_attraction(float u);
 
   /**
+   * Attraction function
+   * This is defined here since it is a basic behavior for collision avoidance.
+   * which many higher level controllers may want to use, although it does not have to be.
+   * @param u Distance to neighbor
+   * @return float Attraction speed
+   */
+  float f_attraction_equilibrium(float u, float eq_distance);
+
+  /**
    * Repulsion function.
    * This is defined here since it is a basic behavior for collision avoidance
    * which many higher level controllers may want to use, although it does not have to be.

@@ -14,8 +14,8 @@ Controller::Controller()
 {
   _ddes_x = 1.0; // Desired distance at North
   _ddes_y = 1.0; // Desired distance at East
-  _kr = 0.1;     // Repulsion gain
-  _ka = 0.1;     // Attraction gain
+  _kr = 0.1; // Repulsion gain
+  _ka = 0.0; // Attraction gain
   saturation = false; // Controller saturation
 };
 
@@ -28,9 +28,13 @@ void Controller::saturate(float &f)
 
 float Controller::f_attraction(float u)
 {
-  //% Sigmoid function -- long-range
-  float ddes = 1.5;
-  float w = log(abs(ddes / _kr - 1.0) / exp(-_ka * ddes)) / _ka;
+  return _ka * u;
+}
+
+float Controller::f_attraction_equilibrium(float u, float eq_distance)
+{
+  // Sigmoid function -- long-range
+  float w = log(abs(eq_distance / _kr - 1.0) / exp(-_ka * eq_distance)) / _ka;
   return 1 / (1 + exp(-_ka * (u - w)));
 }
 
@@ -66,7 +70,7 @@ void Controller::get_lattice_motion_all(const int &ID, float &v_x, float &v_y)
 
 float Controller::get_attraction_velocity(float u)
 {
-  return f_attraction(u);
+  return f_attraction(u) + f_repulsion(u);
 }
 
 float Controller::f_repulsion(float u)
