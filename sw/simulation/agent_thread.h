@@ -46,7 +46,6 @@ void run_agent_simulation_step(const int &ID)
       s.at(ID)->state[3] = 0.0; // v_y
       s.at(ID)->state[4] = 0.0; // a_x
       s.at(ID)->state[5] = 0.0; // a_y
-      cout << int(ID) << " not moving " << s_n[2] << " " << s_n[3] << endl;
       s.at(ID)->controller->moving = false; // Not moving
       mtx.unlock();
     }
