@@ -80,7 +80,9 @@ void main_simulation_thread(int argc, char *argv[], string id)
 #else
     for (uint8_t ID = 0; ID < nagents; ID++) {
       vector<float> state = {x0[ID], y0[ID], 0.0, 0.0, 0.0, 0.0, t0[ID], 0.0};
+      mtx.lock();
       create_new_agent(ID, state); // Create agent
+      mtx.unlock();
     }
 #endif
   }
