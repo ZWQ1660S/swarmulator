@@ -7,7 +7,7 @@
 #include <sys/stat.h> // fifo related
 #include <fcntl.h> // fifo related
 
-fifo::fifo()
+fifo::fifo(string identifier)
 {
   fifo::open("/tmp/swarmulator_" + identifier);
   terminalinfo::debug_msg("Pipe set to " + identifier);

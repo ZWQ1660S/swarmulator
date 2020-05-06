@@ -55,6 +55,7 @@ void main_simulation_thread(int argc, char *argv[])
   terminalinfo::info_msg("Simulation started.");
   read_argv(argc, argv); // Read the number of agents from the argument input
   random_generator rg;
+  fifo f(identifier); // Open FIFO pipe
 
 #ifdef ESTIMATOR
   pr.init();
@@ -87,7 +88,6 @@ void main_simulation_thread(int argc, char *argv[])
   // Keep global clock running.
   // This is only used by the animation and the logger.
   // The robots operate by their own detached thread clock.
-  fifo f; // Open FIFO pipe
   while (program_running) {
     if (!paused) {
 #ifdef SEQUENTIAL

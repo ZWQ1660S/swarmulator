@@ -15,7 +15,7 @@ public:
    * @brief Construct a new fifo object
    *
    */
-  fifo();
+  fifo(string);
 
   /**
    * @brief Destroy the fifo object
