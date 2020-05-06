@@ -21,9 +21,7 @@ vector<float> particle_oriented::state_update(vector<float> state)
   float vx_des, vy_des = 0.;
   float vx_global, vy_global, dpsi_rate;
   // if (!manual) {
-  mtx.lock();
   controller->get_velocity_command(ID, vx_des, dpsi_rate); // Command comes out in the local frame
-  mtx.unlock();
   // dpsi_rate = 0;
   // } else {
   //   vx_des = manualx;

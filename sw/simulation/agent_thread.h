@@ -26,8 +26,8 @@ void run_agent_simulation_step(const int &ID)
   while (program_running) {
     // Update the position of the agent in the simulation
     // auto start = chrono::steady_clock::now();
+    mtx.lock();
     vector<float> s_n = s.at(ID)->state_update(s.at(ID)->state); // State update
-
     /****** Wall physics engine ********/
     // Check if hitting a wall
     vector<float> test = s_n;
@@ -37,18 +37,15 @@ void run_agent_simulation_step(const int &ID)
     test[0] += vx_temp;
     test[1] += vy_temp;
     if (!environment.sensor(ID, s.at(ID)->state, test, ang_temp)) { // No wall --> Update the dynamics
-      mtx.lock(); // Lock mutex to avoid conflicts
       s.at(ID)->state = s_n;
-      mtx.unlock();
     } else { // Wall! --> Kill the dynamics
-      mtx.lock();
       s.at(ID)->state[2] = 0.0; // v_x
       s.at(ID)->state[3] = 0.0; // v_y
       s.at(ID)->state[4] = 0.0; // a_x
       s.at(ID)->state[5] = 0.0; // a_y
       s.at(ID)->controller->moving = false; // Not moving
-      mtx.unlock();
     }
+    mtx.unlock();
     /**********************************/
     // auto end = chrono::steady_clock::now();
     // auto duration = chrono::duration_cast<chrono::microseconds>(end - start).count();
