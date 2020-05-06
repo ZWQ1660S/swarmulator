@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
   thread logger(main_logger_thread);
   logger.detach();
 #endif
-  main_simulation_thread(argc, argv);
+  main_simulation_thread(argc, argv, identifier);
 
   // Exit
   terminalinfo::info_msg("Swarmulator exiting");

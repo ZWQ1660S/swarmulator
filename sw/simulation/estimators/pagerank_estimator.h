@@ -1,6 +1,7 @@
 #ifndef PAGERANK_ESTIMATOR_H
 #define PAGERANK_ESTIMATOR_H
 #include <stdio.h>
+#include <eigen3/Eigen/Sparse>
 
 using namespace std;
 

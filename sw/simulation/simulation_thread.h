@@ -50,12 +50,12 @@ void read_argv(int argc, char *argv[])
  * @param argc Number of arguments from terminal input when launching swarmulator
  * @param argv Content of arguments from terminal input when launching swarmulator
  */
-void main_simulation_thread(int argc, char *argv[])
+void main_simulation_thread(int argc, char *argv[], string id)
 {
   terminalinfo::info_msg("Simulation started.");
   read_argv(argc, argv); // Read the number of agents from the argument input
   random_generator rg;
-  fifo f(identifier); // Open FIFO pipe
+  fifo f(id); // Open FIFO pipe
 
 #ifdef ESTIMATOR
   pr.init();

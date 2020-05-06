@@ -7,10 +7,10 @@
 #include <sys/stat.h> // fifo related
 #include <fcntl.h> // fifo related
 
-fifo::fifo(string identifier)
+fifo::fifo(std::string id)
 {
-  fifo::open("/tmp/swarmulator_" + identifier);
-  terminalinfo::debug_msg("Pipe set to " + identifier);
+  fifo::open("/tmp/swarmulator_" + id);
+  terminalinfo::debug_msg("Pipe set to " + id);
 };
 
 void fifo::open(std::string file)
