@@ -55,16 +55,12 @@ int main(int argc, char *argv[])
 {
   program_running = true; // Program is running
 
-  if (!strcmp(param->id().c_str(), "")) {
-    identifier = currentDateTime(); // declared in main.h
-  } else {
-    identifier = param->id();
-  }
-
   if (argc > 2) {
-    string s;
+    string s = "";
     s += argv[2];
     identifier = s;
+  } else {
+    identifier = currentDateTime();
   }
 
   // thread simulation(main_simulation_thread,argc, argv);
