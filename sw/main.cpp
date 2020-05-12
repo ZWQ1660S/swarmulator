@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
     string s = "";
     s += argv[2];
     identifier = s;
-    cout << identifier << endl;
+//    cout << identifier << endl;
   } else {
     identifier = currentDateTime();
   }
