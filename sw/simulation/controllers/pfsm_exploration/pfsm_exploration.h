@@ -6,6 +6,7 @@
 #include <iostream>
 #include "controller.h"
 #include "template_calculator.h"
+#define COMMAND_LOCAL 1  // use COMMAND_LOCAL for local commands
 
 using namespace std;
 

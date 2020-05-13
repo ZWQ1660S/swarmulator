@@ -132,6 +132,7 @@ float OmniscientObserver::request_bearing(const uint8_t &ID, const uint8_t &ID_t
   float noise = rg.gaussian_float(0.0, NOISE_B);
   float b = atan2(request_distance_dim(ID, ID_tracked, 1), request_distance_dim(ID, ID_tracked, 0)) + noise;
 #if COMMAND_LOCAL
+  cout << "hey" << endl;
   return b - own_bearing(ID);
 #else
   return b;
@@ -187,6 +188,9 @@ void OmniscientObserver::beacon(const uint8_t ID, float &r, float &b)
   mtx_env.lock_shared();
   float x = environment.beacon[0] - s[ID]->get_position(0);
   float y = environment.beacon[1] - s[ID]->get_position(1);
-  mtx_env.unlock_shared();
   cart2polar(x, y, r, b);
+#if COMMAND_LOCAL
+  b -= own_bearing(ID);
+#endif
+  mtx_env.unlock_shared();
 }

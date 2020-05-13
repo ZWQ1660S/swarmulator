@@ -52,15 +52,8 @@ void forage::get_velocity_command(const uint8_t ID, float &v_x, float &v_y)
       v_y_ref = 0.0;
       moving = false;
     } else { // Else explore randomly, change heading
-      float ang = rg.uniform_float(0.0, 2 * M_PI);
-      if (moving) {
-        float ext = rg.gaussian_float(0.0, 0.5);
-        float temp;
-        cart2polar(v_x_ref, v_y_ref, temp, ang);
-        ang += ext;
-      }
-      wrapTo2Pi(ang);
-      polar2cart(vmean, ang, v_x_ref, v_y_ref);
+      v_x_ref = vmean;
+      v_y_ref = rg.gaussian_float(0.0, 0.5);
       moving = true;
     }
   }
@@ -71,18 +64,21 @@ void forage::get_velocity_command(const uint8_t ID, float &v_x, float &v_y)
   if (t && !holds_food) {
     environment.grab_food(ID_food);
     holds_food = true;
+    terminalinfo::info_msg("grabbed food", ID);
   }
 
   if (holds_food) {
     float br, bt;
-    o.beacon(ID, br, bt);
-    polar2cart(br, bt, v_x_ref, v_y_ref);
-    if (br < 2.0) {
+    o.beacon(ID, v_x_ref, v_y_ref);
+    if (v_x_ref < rangesensor) {
       holds_food = false;
+      terminalinfo::info_msg("released food", ID);
     }
+    cout << v_y_ref << endl;
+    v_x_ref = vmean;
   }
 
-  wall_avoidance(ID, v_x_ref, v_y_ref);
+  wall_avoidance_t(ID, v_x_ref, v_y_ref);
 
   // Final output
   v_x += v_x_ref;

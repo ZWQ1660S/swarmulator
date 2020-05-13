@@ -7,6 +7,7 @@
 #include "controller.h"
 
 using namespace std;
+#define COMMAND_LOCAL 1  // use COMMAND_LOCAL for local commands
 
 class forage: public Controller
 {

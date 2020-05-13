@@ -20,6 +20,6 @@
   <!-- Logger -->
   <logger_updatefreq>2</logger_updatefreq>
   <!-- Additional parameters -->
-  <policy/>
+  <policy>conf/state_action_matrices/aggregation_policy_evolved.txt</policy>/>
   <!--new_parameter_name>default value</new_parameter_name-->
 </parameters>
