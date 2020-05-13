@@ -183,7 +183,7 @@ void mouse_click_callback(int button, int state, int x, int y)
     float wall_x_1 = ((float)x / (float)glutGet(GLUT_WINDOW_WIDTH) * 8. - 4.) / (zoom_scale * xrat) - center_x;
     float wall_y_1 = -((float)y / (float)glutGet(GLUT_WINDOW_HEIGHT) * 8. - 4.) / (zoom_scale * yrat) - center_y;
     // Generate new wall
-    environment.add(wall_x_0, wall_y_0, wall_x_1, wall_y_1);
+    environment.add_wall(wall_x_0, wall_y_0, wall_x_1, wall_y_1);
   }
 
   // Zoom wheel

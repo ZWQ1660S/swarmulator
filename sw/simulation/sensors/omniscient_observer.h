@@ -150,6 +150,15 @@ public:
    * @param b
    */
   void relative_location(const uint8_t ID, vector<float> &r, vector<float> &b);
+
+  /**
+   * @brief Returns true if there is nearby food
+   *
+   * @param ID
+   * @param r
+   * @param b
+   */
+  bool sense_food(const uint8_t ID, uint8_t &food_ID);
 };
 
 #endif /*OMNISCIENT_OBSERVER_H*/

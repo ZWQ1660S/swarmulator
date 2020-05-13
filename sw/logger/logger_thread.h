@@ -32,12 +32,12 @@ void run_logger(ofstream &logfile, string filename)
   }
 
   // Write the logfile
-  mtx.lock();
+  mtx.lock_shared();
   if (!paused && simtime_seconds > 1.0) {
     writer.txtwrite_state(logfile);
     writer.txtwrite_summary(logfile);
   }
-  mtx.unlock();
+  mtx.unlock_shared();
 
   // Wait
   uint t_wait = (int)1e6 / (param->logger_updatefreq() * param->simulation_realtimefactor());

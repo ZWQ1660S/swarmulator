@@ -9,7 +9,6 @@
 #include "main.h"
 #include "drawingparams.h"
 #include "settings.h"
-#include "includes_agents.h"
 
 using namespace std;
 
@@ -109,12 +108,12 @@ public:
   void velocity_arrow(const uint8_t &ID, const float &x, const float &y, const float &v_x, const float &v_y);
 
   /**
-   * Draw a dot at the swarm centroid position (x,y)
+   * Draw a dot at the swarm food position (x,y)
    *
-   * @param x The x position of the centroid
-   * @param y The y position of the centroid
+   * @param x The x position of the food
+   * @param y The y position of the food
    */
-  void centroid(const float &x, const float &y);
+  void food(const float &x, const float &y);
 };
 
 #endif /*DRAW_H*/

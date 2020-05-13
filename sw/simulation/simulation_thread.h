@@ -2,17 +2,14 @@
 #define SIMULATION_THREAD_H
 
 #include <numeric>
-#include <functional>
 #include <cctype>
 #include <algorithm>
 #include <thread>
 #include <cstdlib> // system, NULL, EXIT_FAILURE
 #include <iostream>
 #include <sstream> // std::stringstream, std::stringbuf
-#include <future>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <fcntl.h>
 #include <unistd.h>
 
 #include "main.h"
@@ -24,7 +21,6 @@
 #include "environment.h"
 #include "fitness_functions.h"
 #include "fifo.h"
-
 
 /**
  * Extract the number of agents from the argument list.
@@ -80,9 +76,7 @@ void main_simulation_thread(int argc, char *argv[], string id)
 #else
     for (uint8_t ID = 0; ID < nagents; ID++) {
       vector<float> state = {x0[ID], y0[ID], 0.0, 0.0, 0.0, 0.0, t0[ID], 0.0};
-      mtx.lock();
       create_new_agent(ID, state); // Create agent
-      mtx.unlock();
     }
 #endif
   }
@@ -100,11 +94,11 @@ void main_simulation_thread(int argc, char *argv[], string id)
         ID++;
       }
 #endif
-      int t_wait = 1e6 / (param->simulation_updatefreq() * param->simulation_realtimefactor());
-      this_thread::sleep_for(chrono::microseconds(t_wait));
-      mtx.lock(); // Lock mutex to update global clock thread in relative sync
-      simtime_seconds += param->simulation_realtimefactor() * t_wait / 1e6;
-      mtx.unlock();
+      // int t_wait = 1e6 / (param->simulation_updatefreq() * param->simulation_realtimefactor());
+      // this_thread::sleep_for(chrono::microseconds(t_wait));
+      // mtx.lock(); // Lock mutex to update global clock thread in relative sync
+      // simtime_seconds += param->simulation_realtimefactor() * t_wait / 1e6;
+      // mtx.unlock();
       // Runtime finish evolution
       if (param->time_limit() > 0.0) {
         if (simtime_seconds > param->time_limit()) { // Quit after a certain amount of time

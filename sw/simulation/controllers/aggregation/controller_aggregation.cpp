@@ -71,7 +71,10 @@ void controller_aggregation::get_velocity_command(const uint8_t ID, float &v_x, 
     happy = false;
   }
 #endif
-
+  uint8_t ID_food;
+  if (o.sense_food(ID, ID_food)) {
+    environment.grab_food(ID_food);
+  }
   wall_avoidance(ID, v_x_ref, v_y_ref);
 
   // Final output

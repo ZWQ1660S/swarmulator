@@ -151,7 +151,7 @@ void draw::velocity_arrow(const uint8_t &ID, const float &x, const float &y, con
   glPopMatrix();
 }
 
-void draw::centroid(const float &x, const float &y)
+void draw::food(const float &x, const float &y)
 {
   glPushMatrix();
   glTranslatef(y, x, 0.0);

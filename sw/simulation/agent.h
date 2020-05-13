@@ -8,7 +8,7 @@
 
 #include "settings.h"
 #include "terminalinfo.h"
-#include "includes_controllers.h"
+#include CONTROLLER_INCLUDE
 
 using namespace std;
 

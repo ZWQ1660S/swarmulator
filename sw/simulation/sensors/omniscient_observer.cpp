@@ -1,11 +1,6 @@
 #include "omniscient_observer.h"
 #include "main.h"
 
-#include <eigen3/Eigen/Dense>
-using namespace Eigen;
-
-typedef Matrix<bool, Dynamic, Dynamic> MatrixXb;
-
 int compare_index(const void *p1, const void *p2)
 {
   indexed_array *elem1 = (indexed_array *)p1;
@@ -165,4 +160,21 @@ void OmniscientObserver::relative_location(const uint8_t ID, vector<float> &r, v
     r.push_back(request_distance(ID, c[i]));
     b.push_back(request_bearing(ID, c[i]));
   }
+}
+
+bool OmniscientObserver::sense_food(const uint8_t ID, uint8_t &food_ID)
+{
+  for (uint8_t i = 0; i < environment.food.size(); i++) {
+    float u = 0;
+    for (size_t j = 0; j < 2; j++) {
+      float dd = s[ID]->get_position(j) - environment.food[i][j];
+      u += pow(dd, 2);
+    }
+    if (sqrt(u) < rangesensor) {
+      food_ID = i;
+      cout << int(ID) << " " << int(food_ID) << endl;
+      return true;
+    }
+  }
+  return false;
 }
