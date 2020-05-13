@@ -74,7 +74,6 @@ void forage::get_velocity_command(const uint8_t ID, float &v_x, float &v_y)
       holds_food = false;
       terminalinfo::info_msg("released food", ID);
     }
-    cout << v_y_ref << endl;
     v_x_ref = vmean;
   }
 
