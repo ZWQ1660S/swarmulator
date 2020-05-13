@@ -14,7 +14,7 @@ AGENT?=particle
 #  -Wall turns on most, but not all, compiler warnings
 
 CC = g++ # chosen compiler
-CFLAGS = -g -Wall -std=gnu++0x -D_GLIBCXX_USE_NANOSLEEP -DSWARMULATOR -DCONTROLLER=$(CONTROLLER) -DAGENT=$(AGENT)
+CFLAGS = -g -Wall -std=gnu++17 -D_GLIBCXX_USE_NANOSLEEP -DSWARMULATOR -DCONTROLLER=$(CONTROLLER) -DAGENT=$(AGENT)
 OPT=-lglut -lGLU -lGL -lpthread -lxerces-c -Wno-deprecated-declarations -fno-inline-functions
 
 ifeq ($(VERBOSE),ON)

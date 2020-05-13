@@ -37,7 +37,7 @@ unique_ptr<parameters_t> param(parameters("conf/parameters.xml", xml_schema::fla
  */
 uint nagents; // Number of agents in the simulation
 vector<Agent *> s; // Set up the agents
-mutex mtx; // Mutex needed to lock threads
+shared_mutex mtx; // Mutex needed to lock threads
 float realtimefactor; // Real time factor of simulation
 float simtime_seconds = 0; // Initial simulation time
 float rangesensor = 1.8; // How far each robot can sense
@@ -61,13 +61,10 @@ int main(int argc, char *argv[])
     string s = "";
     s += argv[2];
     identifier = s;
-//    cout << identifier << endl;
   } else {
     identifier = currentDateTime();
   }
 
-  // thread simulation(main_simulation_thread,argc, argv);
-  // simulation.detach();
 #ifdef ANIMATION
   thread animation(main_animation_thread);
   animation.detach();
@@ -77,6 +74,7 @@ int main(int argc, char *argv[])
   thread logger(main_logger_thread);
   logger.detach();
 #endif
+
   main_simulation_thread(argc, argv, identifier);
 
   // Exit

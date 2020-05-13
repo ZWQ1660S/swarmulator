@@ -15,7 +15,7 @@ using namespace std;
 Environment::Environment(void)
 {
   define();
-  animate();
+  // animate();
 }
 
 void Environment::define(void)

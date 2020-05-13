@@ -26,8 +26,11 @@ void run_agent_simulation_step(const int &ID)
   while (program_running) {
     // Update the position of the agent in the simulation
     // auto start = chrono::steady_clock::now();
-    mtx.lock();
-    vector<float> s_n = s.at(ID)->state_update(s.at(ID)->state); // State update
+    mtx.lock_shared();
+    vector<float> s_0 = s.at(ID)->state;
+    vector<float> s_n = s.at(ID)->state_update(s_0); // State update
+    mtx.unlock_shared();
+
     /****** Wall physics engine ********/
     // Check if hitting a wall
     vector<float> test = s_n;
@@ -36,9 +39,11 @@ void run_agent_simulation_step(const int &ID)
     polar2cart(r_temp, ang_temp, vx_temp, vy_temp); // use rangesensor to sense walls
     test[0] += vx_temp;
     test[1] += vy_temp;
-    if (!environment.sensor(ID, s.at(ID)->state, test, ang_temp)) { // No wall --> Update the dynamics
+    if (!environment.sensor(ID, s_0, test, ang_temp)) { // No wall --> Update the dynamics
+      mtx.lock();
       s.at(ID)->state = s_n;
     } else { // Wall! --> Kill the dynamics
+      mtx.lock();
       s.at(ID)->state[2] = 0.0; // v_x
       s.at(ID)->state[3] = 0.0; // v_y
       s.at(ID)->state[4] = 0.0; // a_x
