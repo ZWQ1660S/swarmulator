@@ -20,6 +20,6 @@
   <!-- Logger -->
   <logger_updatefreq>2</logger_updatefreq>
   <!-- Additional parameters -->
-  <policy>../swarmulator/conf/state_action_matrices/policy_observe.txt</policy>
+  <policy/>
   <!--new_parameter_name>default value</new_parameter_name-->
 </parameters>

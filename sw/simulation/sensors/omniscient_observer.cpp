@@ -1,5 +1,5 @@
 #include "omniscient_observer.h"
-#include "math.h"
+#include "trigonometry.h"
 #include "main.h"
 
 int compare_index(const void *p1, const void *p2)
