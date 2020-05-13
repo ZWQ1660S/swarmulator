@@ -27,12 +27,10 @@ void run_agent_simulation_step(const int &ID)
     // auto start = chrono::steady_clock::now();
     int t_wait = (int)1e6 * (1.0 / (param->simulation_updatefreq() * param->simulation_realtimefactor()));
 
-    mtx_env.lock();
     mtx.lock_shared();
     vector<float> s_0 = s.at(ID)->state;
     vector<float> s_n = s.at(ID)->state_update(s_0); // State update
     mtx.unlock_shared();
-    mtx_env.unlock();
 
     /****** Wall physics engine ********/
     // Check if hitting a wall

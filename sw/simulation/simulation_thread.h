@@ -94,11 +94,6 @@ void main_simulation_thread(int argc, char *argv[], string id)
         ID++;
       }
 #endif
-      // int t_wait = 1e6 / (param->simulation_updatefreq() * param->simulation_realtimefactor());
-      // this_thread::sleep_for(chrono::microseconds(t_wait));
-      // mtx.lock(); // Lock mutex to update global clock thread in relative sync
-      // simtime_seconds += param->simulation_realtimefactor() * t_wait / 1e6;
-      // mtx.unlock();
       // Runtime finish evolution
       if (param->time_limit() > 0.0) {
         if (simtime_seconds > param->time_limit()) { // Quit after a certain amount of time

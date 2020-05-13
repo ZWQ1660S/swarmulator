@@ -77,7 +77,6 @@ void Environment::add_wall(float x0, float y0, float x1, float y1)
 
 bool Environment::sensor(const uint8_t ID, vector<float> s_n, vector<float> s, float &angle)
 {
-  // mtx_env.lock_shared();
   Point p1, q1, p2, q2;
   p1.y = s[0]; // Flip axis
   p1.x = s[1];
@@ -94,12 +93,10 @@ bool Environment::sensor(const uint8_t ID, vector<float> s_n, vector<float> s, f
     }
   }
   return false;
-  // mtx_env.unlock_shared();
 }
 
 void Environment::animate(void)
 {
-  // mtx_env.lock_shared();
   draw d;
   for (size_t i = 0; i < walls.size(); i++) {
     d.segment(walls[i][0], walls[i][1], walls[i][2], walls[i][3]);
@@ -108,11 +105,12 @@ void Environment::animate(void)
   for (size_t i = 0; i < food.size(); i++) {
     d.food(food[i][0], food[i][1]);
   }
-  // mtx_env.unlock_shared();
 }
 
 
 void Environment::grab_food(uint64_t food_ID)
 {
+  mtx_env.lock();
   food.erase(food.begin() + food_ID);
+  mtx_env.unlock();
 }

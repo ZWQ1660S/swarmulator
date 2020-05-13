@@ -164,6 +164,7 @@ void OmniscientObserver::relative_location(const uint8_t ID, vector<float> &r, v
 
 bool OmniscientObserver::sense_food(const uint8_t ID, uint8_t &food_ID)
 {
+  mtx_env.lock_shared();
   for (uint8_t i = 0; i < environment.food.size(); i++) {
     float u = 0;
     for (size_t j = 0; j < 2; j++) {
@@ -172,9 +173,10 @@ bool OmniscientObserver::sense_food(const uint8_t ID, uint8_t &food_ID)
     }
     if (sqrt(u) < rangesensor) {
       food_ID = i;
-      cout << int(ID) << " " << int(food_ID) << endl;
+      mtx_env.unlock_shared();
       return true;
     }
   }
+  mtx_env.unlock_shared();
   return false;
 }
