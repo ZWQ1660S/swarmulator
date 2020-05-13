@@ -1,4 +1,5 @@
 #include "omniscient_observer.h"
+#include "math.h"
 #include "main.h"
 
 int compare_index(const void *p1, const void *p2)
@@ -179,4 +180,13 @@ bool OmniscientObserver::sense_food(const uint8_t ID, uint8_t &food_ID)
   }
   mtx_env.unlock_shared();
   return false;
+}
+
+void OmniscientObserver::beacon(const uint8_t ID, float &r, float &b)
+{
+  mtx_env.lock_shared();
+  float x = environment.beacon[0] - s[ID]->get_position(0);
+  float y = environment.beacon[1] - s[ID]->get_position(1);
+  mtx_env.unlock_shared();
+  cart2polar(x, y, r, b);
 }

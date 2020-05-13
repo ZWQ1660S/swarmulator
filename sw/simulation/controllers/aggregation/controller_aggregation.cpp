@@ -54,11 +54,11 @@ void controller_aggregation::get_velocity_command(const uint8_t ID, float &v_x, 
       if (moving) {
         float ext = rg.gaussian_float(0.0, 0.5);
         float temp;
-        cart2polar(v_x_ref, v_y_ref, temp, ang);
+        // cart2polar(v_x_ref, v_y_ref, temp, ang);
         ang += ext;
       }
       wrapTo2Pi(ang);
-      polar2cart(vmean, ang, v_x_ref, v_y_ref);
+      // polar2cart(vmean, ang, v_x_ref, v_y_ref);
       moving = true;
     }
   }
@@ -76,6 +76,9 @@ void controller_aggregation::get_velocity_command(const uint8_t ID, float &v_x, 
   if (t) {
     environment.grab_food(ID_food);
   }
+  float br, bt, bx, by;
+  o.beacon(ID, br, bt);
+  polar2cart(br, bt, v_x_ref, v_y_ref);
   wall_avoidance(ID, v_x_ref, v_y_ref);
 
   // Final output

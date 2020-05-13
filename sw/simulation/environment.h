@@ -13,6 +13,7 @@ class Environment
   vector<vector<float>> walls;
 public:
   vector<vector<float>> food;
+  vector<float> beacon;
 
   /**
   * @brief Construct a new Environment object
@@ -39,6 +40,9 @@ public:
    * Make sure the file exists!
    */
   void define_food(uint64_t n);
+
+
+  void define_beacon(float x, float y);
 
   /**
    * @brief Returns a point within the environment.

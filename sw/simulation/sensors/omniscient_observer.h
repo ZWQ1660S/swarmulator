@@ -159,6 +159,8 @@ public:
    * @param b
    */
   bool sense_food(const uint8_t ID, uint8_t &food_ID);
+
+  void beacon(const uint8_t ID, float &r, float &b);
 };
 
 #endif /*OMNISCIENT_OBSERVER_H*/

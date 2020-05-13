@@ -17,6 +17,7 @@ Environment::Environment(void)
 {
   define_walls();
   define_food(100);
+  define_beacon(0., 0.);
 }
 
 void Environment::define_walls(void)
@@ -41,6 +42,13 @@ void Environment::define_food(uint64_t n)
     food[i].push_back(rg.uniform_float(-lim, lim));
   }
 }
+
+void Environment::define_beacon(float x, float y)
+{
+  beacon.push_back(x);
+  beacon.push_back(y);
+}
+
 
 // TODO: Temporary function for initialization, but the initalization should change eventually
 vector<float> Environment::start(void)
