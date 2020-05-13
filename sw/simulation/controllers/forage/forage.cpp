@@ -1,10 +1,10 @@
-#include "controller_aggregation.h"
+#include "forage.h"
 #include "agent.h"
 #include "main.h"
 #include "randomgenerator.h"
 #include "auxiliary.h"
 
-controller_aggregation::controller_aggregation() : Controller()
+forage::forage() : Controller()
 {
   moving = false;
   v_x_ref = rg.gaussian_float(0.0, 1.0);
@@ -22,9 +22,10 @@ controller_aggregation::controller_aggregation() : Controller()
   timelim = 2.0 * param->simulation_updatefreq();
   moving_timer = rg.uniform_int(0, timelim);
   vmean = 0.5;
+  holds_food = false;
 }
 
-void controller_aggregation::get_velocity_command(const uint8_t ID, float &v_x, float &v_y)
+void forage::get_velocity_command(const uint8_t ID, float &v_x, float &v_y)
 {
   v_x = 0;
   v_y = 0;
@@ -54,15 +55,33 @@ void controller_aggregation::get_velocity_command(const uint8_t ID, float &v_x, 
       if (moving) {
         float ext = rg.gaussian_float(0.0, 0.5);
         float temp;
-        cart2polar(v_x_ref, v_y_ref, temp, ang);
+        // cart2polar(v_x_ref, v_y_ref, temp, ang);
         ang += ext;
       }
       wrapTo2Pi(ang);
-      polar2cart(vmean, ang, v_x_ref, v_y_ref);
+      // polar2cart(vmean, ang, v_x_ref, v_y_ref);
       moving = true;
     }
   }
   increase_counter_to_value(moving_timer, timelim, 1);
+
+  uint8_t ID_food;
+  bool t = o.sense_food(ID, ID_food);
+  if (t && !holds_food) {
+    environment.grab_food(ID_food);
+    holds_food = true;
+  }
+
+  if (holds_food) {
+    float br, bt;
+    o.beacon(ID, br, bt);
+    polar2cart(br, bt, v_x_ref, v_y_ref);
+  }
+
+  if (br < 2.0) {
+    holds_food = false;
+  }
+
   wall_avoidance(ID, v_x_ref, v_y_ref);
 
   // Final output
