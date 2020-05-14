@@ -74,7 +74,7 @@ void main_simulation_thread(int argc, char *argv[], string id)
     uint ID = 0;
     float t_created = -SEQUENTIAL - 1; // so that first agent is created at time - 9,9
 #else
-    for (uint8_t ID = 0; ID < nagents; ID++) {
+    for (uint16_t ID = 0; ID < nagents; ID++) {
       vector<float> state = {x0[ID], y0[ID], 0.0, 0.0, 0.0, 0.0, t0[ID], 0.0};
       create_new_agent(ID, state); // Create agent
     }
@@ -98,6 +98,7 @@ void main_simulation_thread(int argc, char *argv[], string id)
       if (param->time_limit() > 0.0) {
         if (simtime_seconds > param->time_limit()) { // Quit after a certain amount of time
           mtx.lock(); // Done
+          terminalinfo::debug_msg("Sending message");
           f.send(evaluate_fitness());
 #ifdef ESTIMATOR
           pr.save();

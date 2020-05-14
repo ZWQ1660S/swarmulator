@@ -24,7 +24,7 @@ public:
   pfsm_exploration();
   void action_motion(const int &selected_action, float r, float t, float &v_x, float &v_y);
   void state_action_lookup(const int ID, uint state_index);
-  virtual void get_velocity_command(const uint8_t ID, float &v_x, float &v_y);
+  virtual void get_velocity_command(const uint16_t ID, float &v_x, float &v_y);
 };
 
 #endif /*PFSM_EXPLORATION_H*/

@@ -34,7 +34,7 @@ void pfsm_exploration::state_action_lookup(const int ID, uint state_index)
   selected_action = rg.discrete_int(p);
 }
 
-void pfsm_exploration::get_velocity_command(const uint8_t ID, float &v_x, float &v_y)
+void pfsm_exploration::get_velocity_command(const uint16_t ID, float &v_x, float &v_y)
 {
   v_x = 0.0;
   v_y = 0.0;

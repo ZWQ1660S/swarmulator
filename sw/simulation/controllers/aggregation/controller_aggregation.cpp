@@ -24,7 +24,7 @@ controller_aggregation::controller_aggregation() : Controller()
   vmean = 0.5;
 }
 
-void controller_aggregation::get_velocity_command(const uint8_t ID, float &v_x, float &v_y)
+void controller_aggregation::get_velocity_command(const uint16_t ID, float &v_x, float &v_y)
 {
   v_x = 0;
   v_y = 0;

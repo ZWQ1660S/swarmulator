@@ -53,7 +53,7 @@ void Controller::get_lattice_motion_all(const int &ID, float &v_x, float &v_y)
   vector<uint> closest = o.request_closest(ID);
   vector<uint> q_ID;
   q_ID.clear();
-  for (uint8_t i = 0; i < s.size() - 1; i++) {
+  for (uint16_t i = 0; i < s.size() - 1; i++) {
     if (o.request_distance(ID, closest[i]) < rangesensor) {
       q_ID.push_back(closest[i]); // Log ID (for simulation purposes only, depending on assumptions)
     }
@@ -84,7 +84,7 @@ void Controller::set_saturation(const float &lim)
   saturation_limits = lim;
 }
 
-bool Controller::wall_avoidance(const uint8_t ID, float &v_x, float &v_y)
+bool Controller::wall_avoidance(const uint16_t ID, float &v_x, float &v_y)
 {
   // Predict what the command wants and see if it will hit a wall, then fix it.
   vector<float> sn = s[ID]->state;
@@ -106,7 +106,7 @@ bool Controller::wall_avoidance(const uint8_t ID, float &v_x, float &v_y)
   return false;
 }
 
-bool Controller::wall_avoidance_t(const uint8_t ID, float &v, float &dpsitheta)
+bool Controller::wall_avoidance_t(const uint16_t ID, float &v, float &dpsitheta)
 {
   // Predict what the command wants and see if it will hit a wall, then fix it.
   vector<float> sn = s[ID]->state;

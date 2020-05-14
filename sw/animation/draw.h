@@ -84,7 +84,7 @@ public:
    *
    * @param ID The ID of the robot in question
    */
-  void agent_number(const uint8_t &ID);
+  void agent_number(const uint16_t &ID);
 
   /**
    * Draw the agent (uses internal function defined by the agent class)
@@ -94,7 +94,7 @@ public:
    * @param y The y position of the robot
    * @param orientation The orientation of the robot
    */
-  void agent(const uint8_t &ID, const float &x, const float &y, const float &orientation);
+  void agent(const uint16_t &ID, const float &x, const float &y, const float &orientation);
 
   /**
    * Draw a line showing the velocity of the agent
@@ -105,7 +105,7 @@ public:
    * @param v_x The velocity of the robot in x (global)
    * @param v_y The velocity of the robot in y (global)
    */
-  void velocity_arrow(const uint8_t &ID, const float &x, const float &y, const float &v_x, const float &v_y);
+  void velocity_arrow(const uint16_t &ID, const float &x, const float &y, const float &v_x, const float &v_y);
 
   /**
    * Draw a dot at the swarm food position (x,y)

@@ -42,7 +42,7 @@ void main_loop_function()
   // Draw all robots
   uint r = s.size();
   if (r > 0) {
-    for (uint8_t ID = 0; ID < r; ID++) {
+    for (uint16_t ID = 0; ID < r; ID++) {
       // Input: ID, p_x global, p_y global, orientation global
       drawer.agent(ID, s[ID]->state.at(0), s[ID]->state.at(1), s[ID]->orientation);
       // Input: ID, p_x global, p_y global, v_x global, v_y global

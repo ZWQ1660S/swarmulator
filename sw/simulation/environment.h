@@ -79,7 +79,7 @@ public:
    * @return true if the lines intersect, meaning that it will go through a wall, so that we can handle it.
    * @return false if the lines do not intersect, so that the robot will not go through a wall and can act normally.
    */
-  bool sensor(const uint8_t ID, vector<float> s_n, vector<float> s, float &angle);
+  bool sensor(const uint16_t ID, vector<float> s_n, vector<float> s, float &angle);
 
   void grab_food(uint64_t food_ID);
 

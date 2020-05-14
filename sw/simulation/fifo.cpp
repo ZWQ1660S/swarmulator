@@ -24,7 +24,7 @@ void fifo::open(std::string file)
 
 bool fifo::send(float f)
 {
-  uint8_t size = 8;
+  uint16_t size = 8;
   char msg[size];
   sprintf(msg, "%f", f);
   return write(fifo_write_id, (char *)msg, size * sizeof(char));

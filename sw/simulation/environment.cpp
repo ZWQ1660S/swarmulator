@@ -83,7 +83,7 @@ void Environment::add_wall(float x0, float y0, float x1, float y1)
   mtx.unlock();
 }
 
-bool Environment::sensor(const uint8_t ID, vector<float> s_n, vector<float> s, float &angle)
+bool Environment::sensor(const uint16_t ID, vector<float> s_n, vector<float> s, float &angle)
 {
   Point p1, q1, p2, q2;
   p1.y = s[0]; // Flip axis

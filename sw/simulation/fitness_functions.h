@@ -60,7 +60,7 @@ inline static float mean_dist_to_neighbors()
  *
  * @return float the mean distance to all neighbors that a robot has
  */
-inline static float mean_dist_to_one_neighbor(uint8_t ID_tracked)
+inline static float mean_dist_to_one_neighbor(uint16_t ID_tracked)
 {
   float f = 0.;
   OmniscientObserver o;

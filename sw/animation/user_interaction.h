@@ -53,7 +53,7 @@ void keyboard_callback(unsigned char key, __attribute__((unused)) int a, __attri
       break;
     case 'z': // Reset the zoom to the default value
       terminalinfo::info_msg("Resetting zoom.");
-      zoom = 0;
+      zoom = param->zoom();
       break;
     case 'q': // End the simulation and quit
       terminalinfo::info_msg("Quitting Swarmulator.");
@@ -73,7 +73,7 @@ void keyboard_callback(unsigned char key, __attribute__((unused)) int a, __attri
         mtx.unlock();
         paused = false;
       }
-      s[0]->manual = false;
+      param->simulation_realtimefactor() = realtimefactor;
       break;
     case 's': // Step through the simulation. Very useful for debugging or analyzing what's going on.
       terminalinfo::info_msg("Stepping through. Press `s' to keep stepping forwrad to `r' to resume. ");
