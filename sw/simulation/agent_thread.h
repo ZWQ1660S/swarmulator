@@ -23,7 +23,7 @@
 void run_agent_simulation_step(const int &ID)
 {
   while (program_running) {
-    bool sequential = (s.size() == nagents);
+    bool sequential = (s.size() == nagents || simtime_seconds > 0.);
 #ifdef SEQUENTIAL
     sequential = true;
 #endif
