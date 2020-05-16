@@ -14,6 +14,7 @@ class Environment
 public:
   vector<vector<float>> food;
   vector<float> beacon;
+  float nest;
 
   /**
   * @brief Construct a new Environment object
@@ -82,7 +83,8 @@ public:
   bool sensor(const uint16_t ID, vector<float> s_n, vector<float> s, float &angle);
 
   void grab_food(uint64_t food_ID);
-
+  void drop_food();
+  void eat_food(float);
   /**
    * Function used to draw all the walls in the animation. It is called by the animation thread.
    *

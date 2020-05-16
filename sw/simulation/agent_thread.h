@@ -28,10 +28,10 @@ void run_agent_simulation_step(const int &ID)
     sequential = true;
 #endif
     if (sequential) {
-      mtx.lock_shared();
+      mtx.lock();
       vector<float> s_0 = s.at(ID)->state;
       vector<float> s_n = s.at(ID)->state_update(s_0); // State update
-      mtx.unlock_shared();
+      mtx.unlock();
 
       /****** Wall physics engine ********/
       // Check if hitting a wall
@@ -57,10 +57,11 @@ void run_agent_simulation_step(const int &ID)
       if (ID == 0) { // global clock = clock of first robot
         simtime_seconds += 1. / param->simulation_updatefreq();
       }
-
-      /*** Sleep. Set param->simulation_realtimefactor()=0 in parameters.xml to avoid sleep and run at full speed! ***/
-      int t_wait = (int)1e6 / (param->simulation_updatefreq() * param->simulation_realtimefactor());
-      this_thread::sleep_for(chrono::microseconds(t_wait));
+      if (param->simulation_realtimefactor() > 0) {
+        /*** Sleep. Set param->simulation_realtimefactor()=0 in parameters.xml to avoid sleep and run at full speed! ***/
+        int t_wait = (int)1e6 / (param->simulation_updatefreq() * param->simulation_realtimefactor());
+        this_thread::sleep_for(chrono::microseconds(t_wait));
+      }
     }
   }
 }

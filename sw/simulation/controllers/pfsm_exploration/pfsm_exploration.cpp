@@ -12,7 +12,7 @@ pfsm_exploration::pfsm_exploration(): t(4)
   vmean = 0.5; // Adjustment velocity
   moving = false;
   selected_action = 3;
-  st = 0;
+  st = 100; // Init
 }
 
 void pfsm_exploration::action_motion(const int &selected_action, float r, float t, float &v_x, float &v_y)
@@ -29,8 +29,6 @@ void pfsm_exploration::action_motion(const int &selected_action, float r, float 
 void pfsm_exploration::state_action_lookup(const int ID, uint state_index)
 {
   vector<float> p = policy[state_index];
-  // cout << state_index << endl;
-  // fmat<float>::print(1, 8, p, "p");
   selected_action = rg.discrete_int(p);
 }
 
@@ -43,8 +41,9 @@ void pfsm_exploration::get_velocity_command(const uint16_t ID, float &v_x, float
   vector<bool> state;
   vector<int> temp;
   t.assess_situation(ID, state, temp);
-
-  if (st != bool2int(state) || (moving_timer == 1)) { // on state change
+  // cout << int(ID);
+  // fmat<bool>::print(1,4,state,"state");
+  if (st != bool2int(state) || moving_timer == 1) { // on state change
     st = bool2int(state);
 #ifdef ESTIMATOR
     uint a = 0;
@@ -56,6 +55,8 @@ void pfsm_exploration::get_velocity_command(const uint16_t ID, float &v_x, float
     cart2polar(s[ID]->state[2], s[ID]->state[3], r, t);
     action_motion(selected_action, r, t, vx_ref, vy_ref);
   }
+
+  // if (moving_timer == 1){}
   increase_counter_to_value(moving_timer, timelim, 1);
 
   v_x += vx_ref;

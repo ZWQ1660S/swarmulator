@@ -104,11 +104,13 @@ inline static uint number_of_clusters()
 inline static float evaluate_fitness()
 {
   float f;
+  // Uncomment the fitness function that you would like to use, or write your own
   // f = mean_dist_to_one_neighbor(0);
   // f = mean_number_of_neighbors();
   f = 1. / ((float)number_of_clusters() / float(nagents)); // use 1./ to minimize (e.g. for aggregation)
   // f = mean_dist_to_neighbors();
   // f = 1. / mean_dist_to_all(); //  use 1./ to minimize
+  // f = environment.nest;
   // connectivity_check(f);
   return f;
 }

@@ -8,7 +8,8 @@ using namespace std;
 class pagerank_estimator
 {
 public:
-  vector<uint> H, E, A, des, pr, s_k, s_kp1;
+  vector<uint> H, E, des, pr, s_k, s_kp1;
+  vector<vector<uint>> A;
   uint n_states;
   float fitness, fitness_max;
 
@@ -16,12 +17,14 @@ public:
    * @brief Construct a new pagerank estimator object.
    *
    */
-  pagerank_estimator(uint s_size)
+  pagerank_estimator(uint s_size, uint n_actions)
   {
     n_states = s_size;
     H.assign(pow(n_states, 2), 0);
     E.assign(pow(n_states, 2), 0);
-    A.assign(pow(n_states, 2), 0);
+    for (size_t i = 0; i < n_actions; i++) {
+      A.push_back(H);
+    }
     des.assign(n_states, 0);
     pr.assign(n_states, 0);
   };

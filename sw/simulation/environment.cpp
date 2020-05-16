@@ -18,6 +18,7 @@ Environment::Environment(void)
   define_walls();
   define_food(100);
   define_beacon(0., 0.);
+  nest = 10;
 }
 
 void Environment::define_walls(void)
@@ -121,4 +122,23 @@ void Environment::grab_food(uint64_t food_ID)
   mtx_env.lock();
   food.erase(food.begin() + food_ID);
   mtx_env.unlock();
+}
+
+void Environment::drop_food()
+{
+  mtx_env.lock();
+  nest += 1.;
+  mtx_env.unlock();
+}
+
+void Environment::eat_food(float amount)
+{
+  if (nest > amount) {
+    mtx_env.lock();
+    nest -= amount;
+    // cout << nest << endl;;
+    mtx_env.unlock();
+    // terminalinfo::info_msg("Oh no! The swarm ran out of food! Quitting.");
+    // program_running = false;
+  }
 }

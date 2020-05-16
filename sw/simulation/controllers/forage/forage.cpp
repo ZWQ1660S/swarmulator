@@ -7,6 +7,7 @@
 
 forage::forage() : Controller()
 {
+  st = 100; // initial value
   moving = false;
   v_x_ref = rg.gaussian_float(0.0, 1.0);
   v_y_ref = rg.gaussian_float(0.0, 1.0);
@@ -14,14 +15,14 @@ forage::forage() : Controller()
   // motion_p = {0.991355, 0.984845, 0.007304, 0.000783, 0.004238, 0.001033, 0.007088};
   string p = param->policy();
   if (!strcmp(p.c_str(), "")) {
-    // motion_p = {0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5};
-    // motion_p = {1.0, 0.0, 0.0, 0.0, 1.0, 0.14, 0.14};
-    motion_p = {1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
+    motion_p = {0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5};
+    // motion_p = {1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0};
   } else {
     motion_p = read_array(p);
   }
-  timelim = 2.0 * param->simulation_updatefreq();
+  timelim = 10.0 * param->simulation_updatefreq();
   moving_timer = rg.uniform_int(0, timelim);
+  moving_timer_1 = rg.uniform_int(0, timelim);
   vmean = 0.5;
   holds_food = false;
 }
@@ -37,46 +38,56 @@ void forage::get_velocity_command(const uint16_t ID, float &v_x, float &v_y)
   vector<float> r, b;
   o.relative_location_inrange(ID, rangesensor, r, b);
 
-  if (st != r.size() || moving_timer == 1) { // state change
+  float br, bt;
+  o.beacon(ID, br, bt);
+  if (br < rangesensor) { // state change
     // state, action
-    st = min(r.size(), motion_p.size());
+    st = min(int(environment.nest), int(motion_p.size()));
+    // cout << environment.nest << endl;
 #ifdef ESTIMATOR
     int a;
     if (moving) {a = 1;}
     else {a = 0;}
     pr.update(ID, st, a); // pr update
 #endif
-
     if (rg.bernoulli(1.0 - motion_p[st])) {
       v_x_ref = 0.0;
       v_y_ref = 0.0;
       moving = false;
     } else { // Else explore randomly, change heading
-      v_x_ref = vmean;
-      v_y_ref = rg.gaussian_float(0.0, 0.5);
       moving = true;
     }
   }
-  increase_counter_to_value(moving_timer, timelim, 1);
+
+  if (moving && moving_timer_1 > timelim / 5) {
+    v_x_ref = vmean;
+    v_y_ref = rg.gaussian_float(0.0, 0.5);
+  }
+  increase_counter_to_value(moving_timer_1, timelim, 1);
 
   uint16_t ID_food;
   bool t = o.sense_food(ID, ID_food);
-  if (t && !holds_food) {
+  if (t && !holds_food && st != 100) {
     environment.grab_food(ID_food);
     holds_food = true;
-    terminalinfo::info_msg("grabbed food", ID);
+    // terminalinfo::info_msg("grabbed food", ID);
   }
 
-  if (holds_food) {
+  if (holds_food || st == 100 || moving_timer > timelim) { // || moving_timer > timelim) {
     float br, bt;
-    o.beacon(ID, v_x_ref, v_y_ref);
+    o.beacon(ID, br, v_y_ref);
     wrapTo2Pi(v_y_ref);
-    if (v_x_ref < rangesensor) {
-      holds_food = false;
-      terminalinfo::info_msg("released food", ID);
+    if (br < rangesensor) {
+      environment.eat_food(0.2);
+      if (holds_food) {
+        environment.drop_food();
+        holds_food = false;
+        // terminalinfo::info_msg("released food", ID);
+      }
     }
     v_x_ref = vmean;
   }
+  increase_counter_to_value(moving_timer, timelim, 1);
 
   wall_avoidance_t(ID, v_x_ref, v_y_ref);
 

@@ -28,7 +28,6 @@ void txtwrite::txtwrite_state(ofstream &logfile)
     }
 #ifdef ESTIMATOR
     logfile << pr.s_kp1[i] << " " << pr.fitness;
-    // logfile << pr.s_kp1[i];
 #endif
     logfile << endl;
   }

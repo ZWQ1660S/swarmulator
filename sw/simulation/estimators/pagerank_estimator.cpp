@@ -39,11 +39,12 @@ void pagerank_estimator::update_G(const uint &ID, const uint &action)
   // Update H or E depending on whether the change was your own
   if (action > 0) {
     H[s_kp1[ID] + s_k[ID] * n_states] += 1; // col + row * row_length
-    A[s_kp1[ID] + s_k[ID] * n_states] = action;
+    A[action - 1][s_kp1[ID] + s_k[ID] * n_states] += 1;
   } else {
     E[s_kp1[ID] + s_k[ID] * n_states] += 1; // col + row * row_length
   }
   pr[s_kp1[ID]] += 1; // Update pr vector
+
 }
 
 void pagerank_estimator::update_des(void)
@@ -66,7 +67,9 @@ void pagerank_estimator::print(void)
   cout << "********************" << endl;
   fmat<uint>::print(n_states, n_states, H, "H");
   fmat<uint>::print(n_states, n_states, E, "E");
-  fmat<uint>::print(n_states, n_states, A, "A");
+  for (size_t i = 0; i < A.size(); i++) {
+    fmat<uint>::print(n_states, n_states, A[i], "A");
+  }
   fmat<uint>::print(1, n_states, pr, "pr");
   fmat<uint>::print(1, n_states, des, "des");
 }
@@ -75,7 +78,9 @@ void pagerank_estimator::save(void)
 {
   fmat<uint>::write_to_csv("logs/E_" + identifier + ".csv", E, n_states, n_states);
   fmat<uint>::write_to_csv("logs/H_" + identifier + ".csv", H, n_states, n_states);
-  fmat<uint>::write_to_csv("logs/A_" + identifier + ".csv", A, n_states, n_states);
+  for (size_t i = 0; i < A.size(); i++) {
+    fmat<uint>::write_to_csv("logs/A_" + identifier + "_" + to_string(i) + ".csv", A[i], n_states, n_states);
+  }
   fmat<uint>::write_to_csv("logs/des_" + identifier + ".csv", des, 1, n_states);
   fmat<uint>::write_to_csv("logs/pr_" + identifier + ".csv", pr, 1, n_states);
 }

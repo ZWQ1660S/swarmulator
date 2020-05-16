@@ -69,8 +69,9 @@ void keyboard_callback(unsigned char key, __attribute__((unused)) int a, __attri
       break;
     case 'r': // Resume the simulation (if paused)
       if (paused) {
-        terminalinfo::info_msg("Resuming.");
+        mtx.try_lock();
         mtx.unlock();
+        terminalinfo::info_msg("Resuming.");
         paused = false;
       }
       param->simulation_realtimefactor() = realtimefactor;
@@ -109,7 +110,6 @@ void keyboard_callback(unsigned char key, __attribute__((unused)) int a, __attri
       s[0]->manualpsi_delta = -0.1;
       break;
     case 'n': // Quit and restart swarmulator
-      mtx.try_lock();
       terminalinfo::info_msg("Restarting.");
       stringstream ss;
       ss << "pkill swarmulator && ./swarmulator " << nagents;
