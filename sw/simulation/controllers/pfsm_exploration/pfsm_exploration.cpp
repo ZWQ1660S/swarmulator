@@ -45,6 +45,11 @@ void pfsm_exploration::get_velocity_command(const uint16_t ID, float &v_x, float
   // fmat<bool>::print(1,4,state,"state");
   if (st != bool2int(state) || moving_timer == 1) { // on state change
     st = bool2int(state);
+#ifdef ESTIMATOR
+    uint a = 0;
+    if (moving) {a = selected_action + 1;}
+    pr.update(ID, st, a);
+#endif
     state_action_lookup(ID, st);
     float r, t;
     cart2polar(s[ID]->state[2], s[ID]->state[3], r, t);
@@ -57,12 +62,6 @@ void pfsm_exploration::get_velocity_command(const uint16_t ID, float &v_x, float
   v_x += vx_ref;
   v_y += vy_ref;
   wall_avoidance_t(ID, v_x, v_y);
-
-#ifdef ESTIMATOR
-  uint a = 0;
-  if (moving) {a = selected_action + 1;}
-  pr.update(ID, st, a);
-#endif
 
   moving = true;
 
