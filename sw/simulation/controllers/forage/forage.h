@@ -17,7 +17,7 @@ class forage: public Controller
   float timelim;
   float v_x_ref, v_y_ref;
   uint st;
-  bool holds_food;
+  bool holds_food, choose;
 public:
   forage();
   virtual void get_velocity_command(const uint16_t ID, float &v_x, float &v_y);

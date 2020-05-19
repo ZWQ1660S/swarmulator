@@ -45,7 +45,7 @@ float rangesensor = 1.8; // How far each robot can sense
 bool program_running  = false; // Program running, initiated false until the beginning
 Environment environment; // Environment walls
 #ifdef ESTIMATOR
-pagerank_estimator pr(16, 8);
+pagerank_estimator pr(param->pr_states(), param->pr_actions());
 #endif
 string identifier; // Log name identifier
 

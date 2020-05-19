@@ -5,26 +5,30 @@
 #include "auxiliary.h"
 #include "math.h"
 
+#define INITIAL_STATE 100
 forage::forage() : Controller()
 {
-  st = 100; // initial value
+  // Initial values
+  st = INITIAL_STATE; // initial value
   moving = false;
-  v_x_ref = rg.gaussian_float(0.0, 1.0);
-  v_y_ref = rg.gaussian_float(0.0, 1.0);
-  // motion_p = {P1, P2, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-  // motion_p = {0.991355, 0.984845, 0.007304, 0.000783, 0.004238, 0.001033, 0.007088};
-  string p = param->policy();
-  if (!strcmp(p.c_str(), "")) {
-    motion_p = {0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5};
-    // motion_p = {1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0};
-  } else {
-    motion_p = read_array(p);
-  }
-  timelim = 10.0 * param->simulation_updatefreq();
+  v_x_ref = 0.0;
+  v_y_ref = 0.0;
   moving_timer = rg.uniform_int(0, timelim);
-  moving_timer_1 = rg.uniform_int(0, timelim);
-  vmean = 0.5;
+  moving_timer_1 = rg.uniform_int(0, timelim * 5);
   holds_food = false;
+  choose = false;
+
+  // Load policy
+  if (!strcmp(param->policy().c_str(), "")) {
+    motion_p = {0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5};
+    // motion_p = {1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0};
+  } else {
+    motion_p = read_array(param->policy());
+  }
+
+  // Control value
+  timelim = 10.0 * param->simulation_updatefreq();
+  vmean = 0.5;
 }
 
 void forage::get_velocity_command(const uint16_t ID, float &v_x, float &v_y)
@@ -32,25 +36,24 @@ void forage::get_velocity_command(const uint16_t ID, float &v_x, float &v_y)
   v_x = 0;
   v_y = 0;
 
-  get_lattice_motion_all(ID, v_x, v_y); // Repulsion from neighbors
+  // Get lattice motion for collision avoidance by controlling speed
+  float temp;
+  get_lattice_motion_all(ID, v_x, temp); // Repulsion from neighbors
 
-  // Sense neighbors
-  vector<float> r, b;
-  o.relative_location_inrange(ID, rangesensor, r, b);
-
+  // Decision making.
+  // If at the beacon, and you haven't chosen what to do. Make a choice!
   float br, bt;
   o.beacon(ID, br, bt);
-  if (br < rangesensor) { // state change
+  if (br < rangesensor && !choose) {
+    choose = true;
     // state, action
-    st = min(int(environment.nest), int(motion_p.size()));
-    // cout << environment.nest << endl;
+    st = min(int(environment.nest), int(motion_p.size() - 1));
 #ifdef ESTIMATOR
     int a;
-    if (moving) {a = 1;}
-    else {a = 0;}
-    pr.update(ID, st, a); // pr update
+    if (moving) {a = 1;} else {a = 0;}
+    pr.update(ID, st, a);
 #endif
-    if (rg.bernoulli(1.0 - motion_p[st])) {
+    if (rg.bernoulli(1.0 - motion_p[st])) { // Move
       v_x_ref = 0.0;
       v_y_ref = 0.0;
       moving = false;
@@ -59,39 +62,44 @@ void forage::get_velocity_command(const uint16_t ID, float &v_x, float &v_y)
     }
   }
 
-  if (moving && moving_timer_1 > timelim / 5) {
+  // Eat some food every time you are moving and take another maneuver.
+  if (moving && moving_timer == 1) {
     v_x_ref = vmean;
-    v_y_ref = rg.gaussian_float(0.0, 0.5);
+    v_y_ref = rg.gaussian_float(0., 0.2);
+    wrapToPi(v_y_ref);
+    environment.eat_food(0.1);
   }
-  increase_counter_to_value(moving_timer_1, timelim, 1);
 
-  uint16_t ID_food;
-  bool t = o.sense_food(ID, ID_food);
-  if (t && !holds_food && st != 100) {
-    environment.grab_food(ID_food);
+  /** Routine to sense food and grab it in case **/
+  uint16_t ID_food; // for sim purposes, used to delete the correct food item once grabbed
+  // Sense the food, return true if sensed and assign ID_food
+  if (o.sense_food(ID, ID_food) && !holds_food && st != INITIAL_STATE) {
+    environment.grab_food(ID_food); // Grab the food item ID_food
     holds_food = true;
-    // terminalinfo::info_msg("grabbed food", ID);
   }
 
-  if (holds_food || st == 100 || moving_timer > timelim) { // || moving_timer > timelim) {
-    float br, bt;
-    o.beacon(ID, br, v_y_ref);
-    wrapTo2Pi(v_y_ref);
-    if (br < rangesensor) {
-      environment.eat_food(0.2);
-      if (holds_food) {
-        environment.drop_food();
-        holds_food = false;
-        // terminalinfo::info_msg("released food", ID);
-      }
-    }
+  // Go to beacon and drop food in case.
+  if (holds_food || moving_timer_1 == 1 || st == INITIAL_STATE) {
+    choose = false;
+    o.beacon(ID, br, v_y_ref); // get angle to beacon
+    v_y_ref = 0.1 * wrapToPi_f(v_y_ref); // gain on control
     v_x_ref = vmean;
+    // Drop the food if you are in the vicinity of the nest
+    if (holds_food && br < rangesensor * 2) {
+      environment.drop_food();
+      holds_food = false;
+    }
   }
-  increase_counter_to_value(moving_timer, timelim, 1);
-
-  wall_avoidance_t(ID, v_x_ref, v_y_ref);
 
   // Final output
   v_x += v_x_ref;
-  v_y += v_y_ref;
+  v_y += v_y_ref; // Psi_ref
+
+  // Wall avoidance
+  wall_avoidance_t(ID, v_x, v_y);
+
+
+  // Counters
+  increase_counter_to_value(moving_timer, timelim, 1);
+  increase_counter_to_value(moving_timer_1, timelim * 5, 1);
 }

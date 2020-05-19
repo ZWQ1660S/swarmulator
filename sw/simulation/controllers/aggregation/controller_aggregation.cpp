@@ -9,11 +9,10 @@ controller_aggregation::controller_aggregation() : Controller()
   moving = false;
   v_x_ref = rg.gaussian_float(0.0, 1.0);
   v_y_ref = rg.gaussian_float(0.0, 1.0);
-  // motion_p = {P1, P2, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-  // motion_p = {0.991355, 0.984845, 0.007304, 0.000783, 0.004238, 0.001033, 0.007088};
   string p = param->policy();
   if (!strcmp(p.c_str(), "")) {
     motion_p = {0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5};
+    // motion_p = {0.991355, 0.984845, 0.007304, 0.000783, 0.004238, 0.001033, 0.007088};
     // motion_p = {1.0, 0.0, 0.0, 0.0, 1.0, 0.14, 0.14};
     // motion_p = {1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
   } else {
@@ -40,11 +39,9 @@ void controller_aggregation::get_velocity_command(const uint16_t ID, float &v_x,
     st = min(r.size(), motion_p.size());
 #ifdef ESTIMATOR
     int a;
-    if (moving) {a = 1;}
-    else {a = 0;}
+    if (moving) {a = 1;} else {a = 0;}
     pr.update(ID, st, a); // pr update
 #endif
-
     if (rg.bernoulli(1.0 - motion_p[st])) {
       v_x_ref = 0.0;
       v_y_ref = 0.0;
