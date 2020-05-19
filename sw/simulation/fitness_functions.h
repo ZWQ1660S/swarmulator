@@ -90,21 +90,21 @@ inline static float evaluate_fitness()
 {
   float f = 1.;
   // Define the fitness function that you would like to use, or write your own
-  if (!strcmp(param->policy().c_str(), "mean_number_of_neighbors"))
+  if (!strcmp(param->fitness().c_str(), "mean_number_of_neighbors"))
   { f = mean_number_of_neighbors();}
-  else if (!strcmp(param->policy().c_str(), "mean_dist_to_neighbors"))
+  else if (!strcmp(param->fitness().c_str(), "mean_dist_to_neighbors"))
   { f = mean_dist_to_neighbors();}
-  else if (!strcmp(param->policy().c_str(), "aggregation_clusters"))
+  else if (!strcmp(param->fitness().c_str(), "aggregation_clusters"))
   { f = 1. / ((float)number_of_clusters() / float(nagents));}
-  else if (!strcmp(param->policy().c_str(), "dispersion_clusters"))
+  else if (!strcmp(param->fitness().c_str(), "dispersion_clusters"))
   { f = ((float)number_of_clusters() / float(nagents));}
-  else if (!strcmp(param->policy().c_str(), "aggregation_dist_to_all"))
+  else if (!strcmp(param->fitness().c_str(), "aggregation_dist_to_all"))
   { f = 1. / mean_dist_to_all();}
-  else if (!strcmp(param->policy().c_str(), "dispersion_dist_to_all"))
+  else if (!strcmp(param->fitness().c_str(), "dispersion_dist_to_all"))
   { f = mean_dist_to_all();}
-  else if (!strcmp(param->policy().c_str(), "food"))
+  else if (!strcmp(param->fitness().c_str(), "food"))
   { f = environment.nest;}
-  else if (!strcmp(param->policy().c_str(), "connected"))
+  else if (!strcmp(param->fitness().c_str(), "connected"))
   { connectivity_check(f); }
   return f;
 }
