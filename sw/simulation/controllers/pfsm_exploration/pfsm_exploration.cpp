@@ -8,7 +8,7 @@ pfsm_exploration::pfsm_exploration(): t(4)
   string p = param->policy();
   policy = read_matrix(p);
   timelim = 5. * param->simulation_updatefreq();
-  moving_timer = 1; //rg.uniform_int(0, timelim);
+  moving_timer = rg.uniform_int(0, timelim);
   vmean = 0.5; // Adjustment velocity
   moving = false;
   selected_action = 3;
@@ -17,11 +17,7 @@ pfsm_exploration::pfsm_exploration(): t(4)
 
 void pfsm_exploration::action_motion(const int &selected_action, float r, float t, float &v_x, float &v_y)
 {
-  // float m = 1.;
-  // float ang[8] = {-0.6, -0.3, 0.0, 0.3, 0.6};
   vector<float> ang = {-1.0, -0.7, -0.3, -0.1, 0.1, 0.3, 0.7, 1.0};
-  // cout << vmean << " " << selected_action << " " << ang[selected_action] << endl;
-  // polar2cart(vmean, ang[selected_action], v_x, v_y);
   v_x = vmean;
   v_y = ang[selected_action];
 }
@@ -41,8 +37,6 @@ void pfsm_exploration::get_velocity_command(const uint16_t ID, float &v_x, float
   vector<bool> state;
   vector<int> temp;
   t.assess_situation(ID, state, temp);
-  // cout << int(ID);
-  // fmat<bool>::print(1,4,state,"state");
   if (st != bool2int(state) || moving_timer == 1) { // on state change
     st = bool2int(state);
 #ifdef ESTIMATOR
@@ -56,7 +50,6 @@ void pfsm_exploration::get_velocity_command(const uint16_t ID, float &v_x, float
     action_motion(selected_action, r, t, vx_ref, vy_ref);
   }
 
-  // if (moving_timer == 1){}
   increase_counter_to_value(moving_timer, timelim, 1);
 
   v_x += vx_ref;

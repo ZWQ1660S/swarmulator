@@ -28,10 +28,10 @@ void run_agent_simulation_step(const int &ID)
     sequential = true;
 #endif
     if (sequential) {
-      mtx.lock();
+      mtx.lock_shared();
       vector<float> s_0 = s.at(ID)->state;
       vector<float> s_n = s.at(ID)->state_update(s_0); // State update
-      mtx.unlock();
+      mtx.unlock_shared();
 
       /****** Wall physics engine ********/
       // Check if hitting a wall
