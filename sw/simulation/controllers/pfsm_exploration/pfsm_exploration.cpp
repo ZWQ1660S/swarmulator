@@ -32,6 +32,7 @@ void pfsm_exploration::get_velocity_command(const uint16_t ID, float &v_x, float
 {
   v_x = 0.0;
   v_y = 0.0;
+  // float tt;
   get_lattice_motion_all(ID, v_x, v_y);
 
   vector<bool> state;
