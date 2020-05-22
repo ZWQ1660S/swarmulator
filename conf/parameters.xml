@@ -22,9 +22,9 @@
   <!-- Additional parameters -->
   <policy>../swarmulator/conf/state_action_matrices/policy_observe.txt</policy>
   <fitness>aggregation_clusters</fitness>
-  <pr_states>0</pr_states>
+  <pr_states>16</pr_states>
   <!-- set to 0 to turn of estimator -->
-  <pr_actions>0</pr_actions>
+  <pr_actions>8</pr_actions>
   <!-- set to 0 to turn of estimator -->
   <!--new_parameter_name>default value</new_parameter_name-->
 </parameters>
