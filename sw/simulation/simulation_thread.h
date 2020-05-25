@@ -98,11 +98,13 @@ void main_simulation_thread(int argc, char *argv[], string id)
       if (param->time_limit() > 0.0) {
         if (simtime_seconds > param->time_limit()) { // Quit after a certain amount of time
           mtx.lock(); // Done
+          mtx_env.lock();
           terminalinfo::debug_msg("Sending message");
           f.send(evaluate_fitness());
 #ifdef ESTIMATOR
           pr.save();
 #endif
+          mtx_env.unlock();
           mtx.unlock();
           program_running = false;
         }

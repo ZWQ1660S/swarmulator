@@ -16,9 +16,11 @@ using namespace std;
 Environment::Environment(void)
 {
   define_walls();
+  mtx_env.lock();
   define_food(100);
   define_beacon(0., 0.);
   nest = 10;
+  mtx_env.unlock();
 }
 
 void Environment::define_walls(void)
@@ -133,12 +135,9 @@ void Environment::drop_food()
 
 void Environment::eat_food(float amount)
 {
+  mtx_env.lock();
   if (nest > amount) {
-    mtx_env.lock();
     nest -= amount;
-    // cout << nest << endl;;
-    mtx_env.unlock();
-    // terminalinfo::info_msg("Oh no! The swarm ran out of food! Quitting.");
-    // program_running = false;
   }
+  mtx_env.unlock();
 }
