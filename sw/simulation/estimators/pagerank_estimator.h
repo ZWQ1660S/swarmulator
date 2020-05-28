@@ -3,13 +3,11 @@
 #include <stdio.h>
 #include <eigen3/Eigen/Sparse>
 
-using namespace std;
-
 class pagerank_estimator
 {
 public:
-  vector<uint> H, E, s_k, s_kp1;
-  vector<vector<uint>> A;
+  std::vector<uint> H, E, s_k, s_kp1;
+  std::vector<std::vector<uint>> A;
   uint n_states;
   float fitness, fitness_max;
   bool estimator_active;

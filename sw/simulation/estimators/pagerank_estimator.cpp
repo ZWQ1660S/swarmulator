@@ -69,7 +69,7 @@ void pagerank_estimator::update_G(const uint &ID, const uint &action)
 void pagerank_estimator::print(void)
 {
   if (estimator_active) {
-    cout << "********************" << endl;
+    std::cout << "********************" << std::endl;
     fmat<uint>::print(n_states, n_states, H, "H");
     fmat<uint>::print(n_states, n_states, E, "E");
     for (size_t i = 0; i < A.size(); i++) {
@@ -84,7 +84,7 @@ void pagerank_estimator::save(void)
     fmat<uint>::write_to_csv("logs/E_" + identifier + ".csv", E, n_states, n_states);
     fmat<uint>::write_to_csv("logs/H_" + identifier + ".csv", H, n_states, n_states);
     for (size_t i = 0; i < A.size(); i++) {
-      fmat<uint>::write_to_csv("logs/A_" + identifier + "_" + to_string(i) + ".csv", A[i], n_states, n_states);
+      fmat<uint>::write_to_csv("logs/A_" + identifier + "_" + std::to_string(i) + ".csv", A[i], n_states, n_states);
     }
   }
 }

@@ -8,8 +8,6 @@
 #include "template_calculator.h"
 #define COMMAND_LOCAL 1  // Local frame
 
-using namespace std;
-
 class pfsm_exploration: public Controller
 {
   Template_Calculator t;
@@ -17,7 +15,7 @@ class pfsm_exploration: public Controller
   int selected_action;
   uint timelim;
   float vmean;
-  vector<vector<float>> policy;
+  std::vector<std::vector<float>> policy;
   uint st; // current state
   float vx_ref, vy_ref;
 public:

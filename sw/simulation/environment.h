@@ -6,14 +6,13 @@
 #include <stdint.h>
 #include <vector>
 #include <mutex>
-using namespace std;
 
 class Environment
 {
-  vector<vector<float>> walls;
+  std::vector<std::vector<float>> walls;
 public:
-  vector<vector<float>> food;
-  vector<float> beacon;
+  std::vector<std::vector<float>> food;
+  std::vector<float> beacon;
   float nest;
 
   /**
@@ -50,7 +49,7 @@ public:
    *
    * @return float
    */
-  vector<float> start(void);
+  std::vector<float> start(void);
 
   /**
    * @brief Returns the furthers point from (0,0) in the environment, used for initialization so that
@@ -80,7 +79,7 @@ public:
    * @return true if the lines intersect, meaning that it will go through a wall, so that we can handle it.
    * @return false if the lines do not intersect, so that the robot will not go through a wall and can act normally.
    */
-  bool sensor(const uint16_t ID, vector<float> s_n, vector<float> s, float &angle);
+  bool sensor(const uint16_t ID, std::vector<float> s_n, std::vector<float> s, float &angle);
 
   void grab_food(uint64_t food_ID);
   void drop_food();

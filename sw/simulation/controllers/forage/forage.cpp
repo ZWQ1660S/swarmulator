@@ -47,7 +47,7 @@ void forage::get_velocity_command(const uint16_t ID, float &v_x, float &v_y)
   if (br < rangesensor && !choose) {
     choose = true;
     // state, action
-    st = min(int(environment.nest), int(motion_p.size() - 1));
+    st = std::min(int(environment.nest), int(motion_p.size() - 1));
 #ifdef ESTIMATOR
     int a;
     if (moving) {a = 1;} else {a = 0;}

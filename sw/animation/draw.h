@@ -10,8 +10,6 @@
 #include "drawingparams.h"
 #include "settings.h"
 
-using namespace std;
-
 /**
  * @brief Object that takes care of OpenGL drawing for all elements of interest.
  * This class contains general openGL function that

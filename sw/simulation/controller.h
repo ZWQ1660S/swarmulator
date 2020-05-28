@@ -9,8 +9,6 @@
 #include <stdint.h>
 #include "omniscient_observer.h"
 
-using namespace std;
-
 /**
  * This is a parent class for a controller.
  * All controllers are children functions that must contain an implementation of get_velocity_command, which is declared virtual here.
@@ -101,6 +99,7 @@ public:
    * @param v_y
    */
   void get_lattice_motion_all(const int &ID, float &v_x, float &v_y);
+  void get_lattice_motion_all(const int &ID, float &v_x, float &v_y, uint8_t k);
 
   /**
    * @brief Get the attraction velocity object

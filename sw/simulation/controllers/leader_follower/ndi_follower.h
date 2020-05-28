@@ -3,8 +3,6 @@
 #include "controller.h"
 #include "ekf_state_estimator.h"
 
-using namespace std;
-
 #define NDI_PAST_VALS 500 // Store the last 200 values in order to compute the control
 
 typedef struct ndihandler {

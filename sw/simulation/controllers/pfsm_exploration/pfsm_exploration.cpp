@@ -3,6 +3,8 @@
 #include "auxiliary.h"
 #include <algorithm> // std::find
 
+using namespace std;
+
 pfsm_exploration::pfsm_exploration(): t(4)
 {
   string p = param->policy();

@@ -6,7 +6,6 @@
 #include <iostream>
 #include "controller.h"
 
-using namespace std;
 #define COMMAND_LOCAL 1 // Local frame
 
 class forage: public Controller

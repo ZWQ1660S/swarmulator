@@ -3,10 +3,7 @@
 
 #include <stdlib.h> // qsort
 #include <cmath>
-#include <vector>
 #include <string>
-
-using namespace std;
 
 /**
  * Wraps an angle in radians between -PI and +PI, overwrites onto the variable

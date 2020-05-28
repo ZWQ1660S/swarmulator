@@ -6,7 +6,7 @@ void draw::data()
 {
   glRasterPos2f((-3.9 / zoom_scale - center_x), (-3.9 / zoom_scale - center_y));
   glColor3ub(255, 255, 255); // White
-  stringstream ss;
+  std::stringstream ss;
   ss << "Time[s]:" << simtime_seconds;
   glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)ss.str().c_str());
 }
@@ -14,9 +14,9 @@ void draw::data()
 void draw::axis_label()
 {
   glRasterPos2f(3.9 / zoom_scale - center_x, 0.1 / zoom_scale);
-  glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)string("E").c_str());
+  glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)std::string("E").c_str());
   glRasterPos2f(0.1 / zoom_scale, 3.9 / zoom_scale - center_y);
-  glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)string("N").c_str());
+  glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)std::string("N").c_str());
 }
 
 void draw::agent_number(const uint16_t &ID)
@@ -24,7 +24,7 @@ void draw::agent_number(const uint16_t &ID)
   glRasterPos2f(-0.01, 0.035);
   glColor3f(1.0, 1.0, 1.0); // Background color
 
-  stringstream ss;
+  std::stringstream ss;
   ss << (int)ID;
   glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)ss.str().c_str());
 }

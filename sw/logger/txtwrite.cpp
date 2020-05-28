@@ -6,6 +6,8 @@
 #include "main.h"
 #include <iomanip>      // std::setprecision
 
+using namespace std;
+
 txtwrite::txtwrite() {}
 
 void txtwrite::setfilename(const string &s)
@@ -15,7 +17,7 @@ void txtwrite::setfilename(const string &s)
 
 void txtwrite::txtwrite_state(ofstream &logfile)
 {
-  stringstream t;
+  std::stringstream t;
   t << simtime_seconds;
   vector<Agent *> state_buff = s;
 

@@ -1,10 +1,11 @@
-#include "controller_aggregation.h"
+#include "aggregation.h"
 #include "agent.h"
 #include "main.h"
 #include "randomgenerator.h"
 #include "auxiliary.h"
 
-controller_aggregation::controller_aggregation() : Controller()
+using namespace std;
+aggregation::aggregation() : Controller()
 {
   moving = false;
   v_x_ref = rg.gaussian_float(0.0, 1.0);
@@ -23,7 +24,7 @@ controller_aggregation::controller_aggregation() : Controller()
   vmean = 0.5;
 }
 
-void controller_aggregation::get_velocity_command(const uint16_t ID, float &v_x, float &v_y)
+void aggregation::get_velocity_command(const uint16_t ID, float &v_x, float &v_y)
 {
   v_x = 0;
   v_y = 0;
@@ -36,7 +37,7 @@ void controller_aggregation::get_velocity_command(const uint16_t ID, float &v_x,
 
   if (st != r.size() || moving_timer == 1) { // state change
     // state, action
-    st = min(r.size(), motion_p.size());
+    st = std::min(r.size(), motion_p.size());
 #ifdef ESTIMATOR
     int a;
     if (moving) {a = 1;} else {a = 0;}

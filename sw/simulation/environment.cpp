@@ -40,7 +40,7 @@ void Environment::define_food(uint64_t n)
   random_generator rg;
   float lim = limits();
   for (size_t i = 0; i < n; i++) {
-    food.push_back(vector<float>());
+    food.push_back(std::vector<float>());
     food[i].push_back(rg.uniform_float(-lim, lim));
     food[i].push_back(rg.uniform_float(-lim, lim));
   }
@@ -54,9 +54,9 @@ void Environment::define_beacon(float x, float y)
 
 
 // TODO: Temporary function for initialization, but the initalization should change eventually
-vector<float> Environment::start(void)
+std::vector<float> Environment::start(void)
 {
-  vector<float> s(2);
+  std::vector<float> s(2);
   s[0] = walls[0][0] + 1.0;
   s[1] = walls[0][1] - 1.0;
   return s;
@@ -78,7 +78,7 @@ float Environment::limits(void)
 void Environment::add_wall(float x0, float y0, float x1, float y1)
 {
   mtx.lock();
-  walls.push_back(vector<float>());
+  walls.push_back(std::vector<float>());
   walls[walls.size() - 1].push_back(x0);
   walls[walls.size() - 1].push_back(y0);
   walls[walls.size() - 1].push_back(x1);
@@ -86,7 +86,7 @@ void Environment::add_wall(float x0, float y0, float x1, float y1)
   mtx.unlock();
 }
 
-bool Environment::sensor(const uint16_t ID, vector<float> s_n, vector<float> s, float &angle)
+bool Environment::sensor(const uint16_t ID, std::vector<float> s_n, std::vector<float> s, float &angle)
 {
   Point p1, q1, p2, q2;
   p1.y = s[0]; // Flip axis
