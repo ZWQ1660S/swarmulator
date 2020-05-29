@@ -48,9 +48,9 @@ void pfsm_exploration::get_velocity_command(const uint16_t ID, float &v_x, float
     float r, t;
     cart2polar(s[ID]->state[2], s[ID]->state[3], r, t);
     action_motion(selected_action, r, t, vx_ref, vy_ref);
-  } else {
-    vy_ref = 0;
   }
+
+  if (moving_timer > 1. * param->simulation_updatefreq()) {vy_ref = 0;}
 
   increase_counter_to_value(moving_timer, timelim, 1);
 
