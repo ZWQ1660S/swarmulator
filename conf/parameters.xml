@@ -2,7 +2,7 @@
 <parameters xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="parameters.xsd">
   <!-- Simulation -->
   <simulation_updatefreq>20</simulation_updatefreq>
-  <simulation_realtimefactor>0</simulation_realtimefactor>
+  <simulation_realtimefactor>50</simulation_realtimefactor>
   <time_limit>0</time_limit>
   <!-- (seconds). Use time_limit > 0 to set a limit -->
   <environment>square</environment>
@@ -20,8 +20,8 @@
   <!-- Logger -->
   <logger_updatefreq>2</logger_updatefreq>
   <!-- Additional parameters -->
-  <policy></policy>
-  <fitness>food</fitness>
+  <policy>../swarmulator/conf/state_action_matrices/exploration_policy_random.txt</policy>
+  <fitness>aggregation_clusters</fitness>
   <pr_states>0</pr_states>
   <!-- set to 0 to turn of estimator -->
   <pr_actions>0</pr_actions>

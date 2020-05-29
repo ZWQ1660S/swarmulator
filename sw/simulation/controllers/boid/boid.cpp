@@ -20,5 +20,5 @@ void boid::get_velocity_command(const uint16_t ID, float &v_x, float &v_y)
 
   v_y = avg_psi - wrapToPi_f(s[ID]->state[6]);
 
-  wall_avoidance_t(ID, v_x, v_y);
+  wall_avoidance_turn(ID, v_x, v_y);
 }

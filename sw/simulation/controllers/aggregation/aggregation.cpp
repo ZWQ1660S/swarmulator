@@ -61,7 +61,7 @@ void aggregation::get_velocity_command(const uint16_t ID, float &v_x, float &v_y
     }
   }
   increase_counter_to_value(moving_timer, timelim, 1);
-  wall_avoidance(ID, v_x_ref, v_y_ref);
+  wall_avoidance_bounce(ID, v_x_ref, v_y_ref);
 
   // Final output
   v_x += v_x_ref;

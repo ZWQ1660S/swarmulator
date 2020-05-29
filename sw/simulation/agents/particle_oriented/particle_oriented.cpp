@@ -2,6 +2,7 @@
 #include "trigonometry.h"
 #include "randomgenerator.h"
 #include "draw.h"
+using namespace std;
 
 particle_oriented::particle_oriented(int i, vector<float> s, float tstep)
 {

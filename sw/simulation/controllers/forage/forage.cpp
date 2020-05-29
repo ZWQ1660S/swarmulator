@@ -96,7 +96,7 @@ void forage::get_velocity_command(const uint16_t ID, float &v_x, float &v_y)
   v_y += v_y_ref; // Psi_ref
 
   // Wall avoidance
-  wall_avoidance_t(ID, v_x, v_y);
+  wall_avoidance_turn(ID, v_x, v_y);
 
 
   // Counters

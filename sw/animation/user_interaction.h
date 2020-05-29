@@ -57,34 +57,30 @@ void keyboard_callback(unsigned char key, __attribute__((unused)) int a, __attri
       break;
     case 'q': // End the simulation and quit
       terminalinfo::info_msg("Quitting Swarmulator.");
-      mtx.try_lock();
       program_running = false;
       break;
     case 'p': // Pause the simulation
       if (!paused) {
         terminalinfo::info_msg("Paused. Press `r' to resume or `s' to step forward.");
-        mtx.try_lock();
         paused = true;
+        mtx.lock();
       }
       break;
     case 'r': // Resume the simulation (if paused)
       if (paused) {
-        mtx.try_lock();
-        mtx.unlock();
         terminalinfo::info_msg("Resuming.");
         paused = false;
+        mtx.unlock();
       }
-      param->simulation_realtimefactor() = realtimefactor;
       break;
     case 's': // Step through the simulation. Very useful for debugging or analyzing what's going on.
-      terminalinfo::info_msg("Stepping through. Press `s' to keep stepping forwrad to `r' to resume. ");
-      int t_wait;
-      mtx.try_lock();
-      mtx.unlock();
-      t_wait = (int)1e6 * (1.0 / (param->simulation_updatefreq() * param->simulation_realtimefactor()));
-      std::this_thread::sleep_for(std::chrono::microseconds(t_wait));
-      mtx.lock();
-      paused = true;
+      if (paused) {
+        terminalinfo::info_msg("Stepping through. Press `s' to keep stepping forwrad to `r' to resume. ");
+        mtx.unlock();
+        int t_wait = (int)1e6 * (1.0 / (param->simulation_updatefreq() * param->simulation_realtimefactor()));
+        std::this_thread::sleep_for(std::chrono::microseconds(t_wait));
+        mtx.lock();
+      }
       break;
     case 'a': // Draw and simulate a new agent, initialized at the current pointer position
       if (!paused) {

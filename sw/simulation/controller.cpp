@@ -98,7 +98,7 @@ void Controller::set_saturation(const float &lim)
   saturation_limits = lim;
 }
 
-bool Controller::wall_avoidance(const uint16_t ID, float &v_x, float &v_y)
+bool Controller::wall_avoidance_bounce(const uint16_t ID, float &v_x, float &v_y)
 {
   // Predict what the command wants and see if it will hit a wall, then fix it.
   std::vector<float> sn = s[ID]->state;
@@ -120,7 +120,7 @@ bool Controller::wall_avoidance(const uint16_t ID, float &v_x, float &v_y)
   return false;
 }
 
-bool Controller::wall_avoidance_t(const uint16_t ID, float &v, float &dpsitheta)
+bool Controller::wall_avoidance_turn(const uint16_t ID, float &v, float &dpsitheta)
 {
   // Predict what the command wants and see if it will hit a wall, then fix it.
   std::vector<float> sn = s[ID]->state;

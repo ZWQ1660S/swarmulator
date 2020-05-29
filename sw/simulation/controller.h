@@ -126,8 +126,8 @@ public:
    * @param v_x The desired velocity in v_x (amended in this function)
    * @param v_y The desired velocity in v_y (amended in this function)
    */
-  bool wall_avoidance(const uint16_t ID, float &v_x, float &v_y);
-  bool wall_avoidance_t(const uint16_t ID, float &v_x, float &v_y);
+  bool wall_avoidance_bounce(const uint16_t ID, float &v_x, float &v_y);
+  bool wall_avoidance_turn(const uint16_t ID, float &v_x, float &v_y);
 };
 
 
