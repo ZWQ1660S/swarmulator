@@ -174,7 +174,7 @@ bool OmniscientObserver::sense_food(const uint16_t ID, uint16_t &food_ID)
     }
     if (sqrt(u) < rangesensor) {
       food_ID = i;
-      mtx_env.unlock();
+      mtx_env.unlock_shared();
       return true;
     }
   }

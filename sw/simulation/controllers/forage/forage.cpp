@@ -4,7 +4,7 @@
 #include "randomgenerator.h"
 #include "auxiliary.h"
 #include "math.h"
-
+using namespace std;
 #define INITIAL_STATE 100
 forage::forage() : Controller()
 {
