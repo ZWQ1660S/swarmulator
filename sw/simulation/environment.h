@@ -1,15 +1,15 @@
 #ifndef ENVIRONMENT_H
 #define ENVIRONMENT_H
 
-// #include <stdio.h>
-// #include <iostream>
 #include <stdint.h>
 #include <vector>
 #include <mutex>
+#include "randomgenerator.h"
 
 class Environment
 {
   std::vector<std::vector<float>> walls;
+  random_generator rg;
 public:
   std::vector<std::vector<float>> food;
   std::vector<float> beacon;
@@ -84,9 +84,10 @@ public:
   void grab_food(uint64_t food_ID);
   void drop_food();
   void eat_food(float);
+
+  void loop(void);
   /**
    * Function used to draw all the walls in the animation. It is called by the animation thread.
-   *
    */
   void animate(void);
 };

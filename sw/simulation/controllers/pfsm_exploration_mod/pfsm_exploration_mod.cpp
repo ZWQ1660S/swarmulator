@@ -1,9 +1,9 @@
-#include "pfsm_exploration.h"
+#include "pfsm_exploration_mod.h"
 #include "draw.h"
 #include "auxiliary.h"
 #include <algorithm> // std::find
 
-pfsm_exploration::pfsm_exploration(): t(4)
+pfsm_exploration_mod::pfsm_exploration_mod(): t(4)
 {
   std::string p = param->policy();
   policy = read_matrix(p);
@@ -15,20 +15,20 @@ pfsm_exploration::pfsm_exploration(): t(4)
   st = 100; // Init
 }
 
-void pfsm_exploration::action_motion(const int &selected_action, float r, float t, float &v_x, float &v_y)
+void pfsm_exploration_mod::action_motion(const int &selected_action, float r, float t, float &v_x, float &v_y)
 {
   std::vector<float> ang = {-1.0, -0.7, -0.3, -0.1, 0.1, 0.3, 0.7, 1.0};
   v_x = vmean;
   v_y = ang[selected_action];
 }
 
-void pfsm_exploration::state_action_lookup(const int ID, uint state_index)
+void pfsm_exploration_mod::state_action_lookup(const int ID, uint state_index)
 {
   std::vector<float> p = policy[state_index];
   selected_action = rg.discrete_int(p);
 }
 
-void pfsm_exploration::get_velocity_command(const uint16_t ID, float &v_x, float &v_y)
+void pfsm_exploration_mod::get_velocity_command(const uint16_t ID, float &v_x, float &v_y)
 {
   v_x = 0.0;
   v_y = 0.0;
@@ -49,6 +49,9 @@ void pfsm_exploration::get_velocity_command(const uint16_t ID, float &v_x, float
     cart2polar(s[ID]->state[2], s[ID]->state[3], r, t);
     action_motion(selected_action, r, t, vx_ref, vy_ref);
   }
+
+  // THE MODOFIER IS HERE!!!
+  if (moving_timer > 1. * param->simulation_updatefreq()) {vy_ref = 0;}
 
   increase_counter_to_value(moving_timer, timelim, 1);
 

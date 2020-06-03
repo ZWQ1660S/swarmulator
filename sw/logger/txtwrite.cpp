@@ -1,10 +1,12 @@
+#include <sstream>
+#include <iomanip>      // std::setprecision
+
 #include "txtwrite.h"
 #include "omniscient_observer.h"
 #include "terminalinfo.h"
-#include <sstream>
 #include "agent.h"
 #include "main.h"
-#include <iomanip>      // std::setprecision
+#include "fitness_functions.h"
 
 using namespace std;
 
@@ -20,7 +22,9 @@ void txtwrite::txtwrite_state(ofstream &logfile)
   std::stringstream t;
   t << simtime_seconds;
   vector<Agent *> state_buff = s;
-
+#ifdef ESTIMATOR
+  float f = evaluate_fitness();
+#endif
   for (uint16_t i = 0; i < s.size(); i++) {
     logfile << t.str() << " " // time
             << i + 1 << " "; // ID
@@ -29,7 +33,7 @@ void txtwrite::txtwrite_state(ofstream &logfile)
       logfile << state_buff[i]->state.at(j) << " ";
     }
 #ifdef ESTIMATOR
-    logfile << pr.s_kp1[i] << " " << pr.fitness;
+    logfile << pr.s_kp1[i] << " " << f;
 #endif
     logfile << endl;
   }

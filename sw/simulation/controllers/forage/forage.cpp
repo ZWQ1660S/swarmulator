@@ -10,6 +10,7 @@ forage::forage() : Controller()
 {
   // Initial values
   st = INITIAL_STATE; // initial value
+  state = 0.0;
   moving = false;
   v_x_ref = 0.0;
   v_y_ref = 0.0;
@@ -45,9 +46,14 @@ void forage::get_velocity_command(const uint16_t ID, float &v_x, float &v_y)
   float br, bt;
   o.beacon(ID, br, bt);
   if (br < rangesensor && !choose) {
+
     choose = true;
     // state, action
-    st = std::min(int(environment.nest), int(motion_p.size() - 1));
+    cout << environment.nest << " " << (state - environment.nest) << " ";
+    state = (state - environment.nest) * 2 + 8; // +8 to center around 0
+    keepbounded(state, 0, 15);
+    st = int(state);
+    cout << state << " " << st << " " << motion_p[st] << endl;
 #ifdef ESTIMATOR
     int a;
     if (moving) {a = 1;} else {a = 0;}
@@ -59,6 +65,8 @@ void forage::get_velocity_command(const uint16_t ID, float &v_x, float &v_y)
       moving = false;
     } else { // Else explore randomly, change heading
       moving = true;
+      cout << "moving" << endl;
+      state = environment.nest;
     }
   }
 
@@ -67,7 +75,7 @@ void forage::get_velocity_command(const uint16_t ID, float &v_x, float &v_y)
     v_x_ref = vmean;
     v_y_ref = rg.gaussian_float(0., 0.2);
     wrapToPi(v_y_ref);
-    environment.eat_food(0.1);
+    // environment.eat_food(0.0);
   }
 
   /** Routine to sense food and grab it in case **/
@@ -79,13 +87,13 @@ void forage::get_velocity_command(const uint16_t ID, float &v_x, float &v_y)
   }
 
   // Go to beacon and drop food in case.
-  if (holds_food || moving_timer_1 == 1 || st == INITIAL_STATE) {
+  if (holds_food || st == INITIAL_STATE) {
     choose = false;
     o.beacon(ID, br, v_y_ref); // get angle to beacon
     v_y_ref = 0.1 * wrapToPi_f(v_y_ref); // gain on control
     v_x_ref = vmean;
     // Drop the food if you are in the vicinity of the nest
-    if (holds_food && br < rangesensor * 2) {
+    if (holds_food && br < rangesensor) {
       environment.drop_food();
       holds_food = false;
     }
@@ -98,8 +106,13 @@ void forage::get_velocity_command(const uint16_t ID, float &v_x, float &v_y)
   // Wall avoidance
   wall_avoidance_turn(ID, v_x, v_y);
 
-
+  if (choose && !moving && moving_timer == 1) {
+    choose = false;
+    o.beacon(ID, br, v_y_ref); // get angle to beacon
+    v_y_ref = 0.1 * wrapToPi_f(v_y_ref); // gain on control
+    v_x_ref = vmean;
+  }
   // Counters
   increase_counter_to_value(moving_timer, timelim, 1);
-  increase_counter_to_value(moving_timer_1, timelim * 5, 1);
+  // increase_counter_to_value(moving_timer_1, timelim * 5, 1);
 }

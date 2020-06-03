@@ -56,6 +56,7 @@ void run_agent_simulation_step(const int &ID)
       }
       if (ID == 0) { // global clock = clock of first robot
         simtime_seconds += 1. / param->simulation_updatefreq();
+        environment.loop();
       }
       if (param->simulation_realtimefactor() > 0) {
         /*** Sleep. Set param->simulation_realtimefactor()=0 in parameters.xml to avoid sleep and run at full speed! ***/

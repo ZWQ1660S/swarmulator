@@ -9,7 +9,6 @@
 #include <iostream>
 #include <cmath>
 #include <algorithm>
-#include "randomgenerator.h"
 
 using namespace std;
 
@@ -37,7 +36,6 @@ void Environment::define_walls(void)
 
 void Environment::define_food(uint64_t n)
 {
-  random_generator rg;
   float lim = limits();
   for (size_t i = 0; i < n; i++) {
     food.push_back(std::vector<float>());
@@ -121,8 +119,10 @@ void Environment::animate(void)
 
 void Environment::grab_food(uint64_t food_ID)
 {
+  float lim = limits();
   mtx_env.lock();
-  food.erase(food.begin() + food_ID);
+  // food.erase(food.begin() + food_ID); // Use this to grab without replacement
+  food[food_ID] = {rg.uniform_float(-lim, lim), rg.uniform_float(-lim, lim)}; // Use this to grab with replacement
   mtx_env.unlock();
 }
 
@@ -140,4 +140,10 @@ void Environment::eat_food(float amount)
     nest -= amount;
   }
   mtx_env.unlock();
+}
+
+void Environment::loop()
+{
+  float rate = 0.1 / param->simulation_updatefreq();
+  eat_food(rate);
 }
