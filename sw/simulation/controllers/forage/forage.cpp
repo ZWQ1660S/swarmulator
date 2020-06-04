@@ -50,6 +50,7 @@ void forage::get_velocity_command(const uint16_t ID, float &v_x, float &v_y)
     state = (state - environment.nest) * 2 + 8; // +8 to center around 0
     keepbounded(state, 0, 15);
     st = int(state);
+    cout << environment.nest << endl;
 #ifdef ESTIMATOR
     int a;
     if (moving) {a = 1;} else {a = 0;}
@@ -59,7 +60,7 @@ void forage::get_velocity_command(const uint16_t ID, float &v_x, float &v_y)
       v_x_ref = 0.0;
       v_y_ref = 0.0;
       moving = false;
-    } else { // Else explore randomly, change heading
+    } else { // Else explore randomly
       moving = true;
       state = environment.nest;
     }
@@ -70,6 +71,7 @@ void forage::get_velocity_command(const uint16_t ID, float &v_x, float &v_y)
     v_x_ref = vmean;
     v_y_ref = rg.gaussian_float(0., 0.2);
     wrapToPi(v_y_ref);
+    environment.eat_food(0.1); // Food they eat when they choose to explore.
   }
 
   /** Routine to sense food and grab it in case **/

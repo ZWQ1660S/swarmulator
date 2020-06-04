@@ -2,10 +2,10 @@
 <parameters xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="parameters.xsd">
   <!-- Simulation -->
   <simulation_updatefreq>20</simulation_updatefreq>
-  <simulation_realtimefactor>0</simulation_realtimefactor>
-  <time_limit>1000</time_limit>
+  <simulation_realtimefactor>300</simulation_realtimefactor>
+  <time_limit>0</time_limit>
   <!-- (seconds). Use time_limit > 0 to set a limit -->
-  <environment>square</environment>
+  <environment></environment>
   <!-- See the folder conf/environments/ for available environments. 
        Create your own or use "random" to generate a random map at runtime -->
   <!-- Animation -->
@@ -22,9 +22,9 @@
   <!-- Additional parameters -->
   <policy>../swarmulator/conf/state_action_matrices/aggregation_policy_benchmark.txt</policy>
   <fitness>food</fitness>
-  <pr_states>0</pr_states>
+  <pr_states>16</pr_states>
   <!-- set to 0 to turn of estimator -->
-  <pr_actions>0</pr_actions>
+  <pr_actions>1</pr_actions>
   <!-- set to 0 to turn of estimator -->
   <!--new_parameter_name>default value</new_parameter_name-->
 </parameters>
