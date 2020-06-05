@@ -8,7 +8,7 @@ void draw::data()
   glRasterPos2f((-3.9 / zoom_scale - center_x), (-3.9 / zoom_scale - center_y));
   glColor3ub(255, 255, 255); // White
   std::stringstream ss;
-  ss << "Time[s]:" << simtime_seconds << " " << "Fitness: " << evaluate_fitness();
+  ss << "Time[s]:" << simtime_seconds << " \t" << "Fitness: " << evaluate_fitness();
   glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char *)ss.str().c_str());
 }
 

@@ -18,7 +18,7 @@ Environment::Environment(void)
   mtx_env.lock();
   define_food(100);
   define_beacon(0., 0.);
-  nest = 10;
+  nest = 8;
   mtx_env.unlock();
 }
 
@@ -49,7 +49,6 @@ void Environment::define_beacon(float x, float y)
   beacon.push_back(x);
   beacon.push_back(y);
 }
-
 
 // TODO: Temporary function for initialization, but the initalization should change eventually
 std::vector<float> Environment::start(void)
@@ -136,14 +135,12 @@ void Environment::drop_food()
 void Environment::eat_food(float amount)
 {
   mtx_env.lock();
-  if (nest > amount) {
-    nest -= amount;
-  }
+  if (nest > amount) { nest -= amount; }
   mtx_env.unlock();
 }
 
 void Environment::loop()
 {
-  float rate = 0.1 / param->simulation_updatefreq();
+  float rate = (0.01 / param->simulation_updatefreq()) * s.size();
   eat_food(rate);
 }

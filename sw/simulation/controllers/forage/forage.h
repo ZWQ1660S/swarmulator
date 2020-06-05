@@ -11,7 +11,8 @@
 class forage: public Controller
 {
   std::vector<float> motion_p; // Probability of motion
-  uint moving_timer, moving_timer_1; // Timer measuring how long a robot has been moving
+  uint timer; // Timer measuring how long a robot has been moving
+  bool explore;
   float vmean;
   float timelim;
   float v_x_ref, v_y_ref;
