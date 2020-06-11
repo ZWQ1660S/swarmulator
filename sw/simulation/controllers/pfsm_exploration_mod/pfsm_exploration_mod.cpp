@@ -5,8 +5,7 @@
 
 pfsm_exploration_mod::pfsm_exploration_mod(): t(4)
 {
-  std::string p = param->policy();
-  policy = read_matrix(p);
+  policy = read_matrix(param->policy());
   timelim = 5. * param->simulation_updatefreq();
   moving_timer = rg.uniform_int(0, timelim);
   vmean = 0.5; // Adjustment velocity
@@ -50,7 +49,7 @@ void pfsm_exploration_mod::get_velocity_command(const uint16_t ID, float &v_x, f
     action_motion(selected_action, r, t, vx_ref, vy_ref);
   }
 
-  // THE MODOFIER IS HERE!!!
+  // THE MODIFIER IS HERE!!!
   if (moving_timer > 1. * param->simulation_updatefreq()) {vy_ref = 0;}
 
   increase_counter_to_value(moving_timer, timelim, 1);

@@ -5,8 +5,7 @@
 
 pfsm_exploration::pfsm_exploration(): t(4)
 {
-  std::string p = param->policy();
-  policy = read_matrix(p);
+  policy = read_matrix(param->policy());
   timelim = 5. * param->simulation_updatefreq();
   moving_timer = rg.uniform_int(0, timelim);
   vmean = 0.5; // Adjustment velocity

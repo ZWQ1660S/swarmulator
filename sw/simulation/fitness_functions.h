@@ -102,9 +102,10 @@ inline static float evaluate_fitness()
   { f = 1. / mean_dist_to_all();}
   else if (!strcmp(param->fitness().c_str(), "dispersion_dist_to_all"))
   { f = mean_dist_to_all();}
-  else if (!strcmp(param->fitness().c_str(), "food"))
-  { f = (float)environment.nest;}
-  else if (!strcmp(param->fitness().c_str(), "connected"))
+  else if (!strcmp(param->fitness().c_str(), "food")) {
+    float rate = (0.01 / param->simulation_updatefreq()) * s.size();
+    f = (float)environment.nest - rate * (float)simtime_seconds;
+  } else if (!strcmp(param->fitness().c_str(), "connected"))
   { connectivity_check(f); }
   return f;
 }

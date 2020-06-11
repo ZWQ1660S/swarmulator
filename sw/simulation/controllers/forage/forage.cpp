@@ -4,29 +4,25 @@
 #include "randomgenerator.h"
 #include "auxiliary.h"
 #include "math.h"
+
 using namespace std;
-#define INITIAL_STATE 100
+
 forage::forage() : Controller()
 {
   // Initial values
-  st = INITIAL_STATE; // initial value
-  state = 0.0;
-  v_x_ref = 0.0;
-  v_y_ref = 0.0;
   timer = rg.uniform_int(0, timelim);
   choose = false;
   holds_food = false;
+  v_x_ref = vmean;
+  v_y_ref = wrapToPi_f(rg.gaussian_float(0., 0.2));
 
-  // Load policy
-  if (!strcmp(param->policy().c_str(), "")) {
-    motion_p = {0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5};
-  } else {
-    motion_p = read_array(param->policy());
-  }
-
-  // Control value
+  // Control values
   timelim = 10.0 * param->simulation_updatefreq();
   vmean = 0.5;
+
+  // Load policy
+  if (!strcmp(param->policy().c_str(), "")) { motion_p.assign(16, 0.5); }
+  else { motion_p = read_array(param->policy()); }
 }
 
 void forage::get_velocity_command(const uint16_t ID, float &v_x, float &v_y)
@@ -47,8 +43,8 @@ void forage::get_velocity_command(const uint16_t ID, float &v_x, float &v_y)
     if (explore) {a = 1;} else {a = 0;}
     pr.update(ID, st, a);
 #endif
-    if (rg.bernoulli(1.0 - motion_p[st])) { explore = false;}
-    else { explore = true; environment.eat_food(0.1); }
+    if (rg.bernoulli(1.0 - motion_p[st])) { explore = false; }
+    else { explore = true; } //environment.eat_food(0.1); }
   }
 
   // Behavior
@@ -67,12 +63,13 @@ void forage::get_velocity_command(const uint16_t ID, float &v_x, float &v_y)
         environment.drop_food();
         holds_food = false;
         choose = false;
+        timer = 1; // reset timer
       }
     } else if (o.sense_food(ID, ID_food)) {
       environment.grab_food(ID_food); // Grab the food item ID_food
       holds_food = true;
     }
-  } else { // not explore
+  } else { // don't explore
     v_x_ref = 0.0;
     v_y_ref = 0.0;
     if (timer == 1) {choose = false;}

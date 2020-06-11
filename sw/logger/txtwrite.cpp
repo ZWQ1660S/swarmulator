@@ -33,7 +33,9 @@ void txtwrite::txtwrite_state(ofstream &logfile)
       logfile << state_buff[i]->state.at(j) << " ";
     }
 #ifdef ESTIMATOR
-    logfile << pr.s_kp1[i] << " " << f;
+    if (pr.estimator_active) {
+      logfile << pr.s_kp1[i] << " " << f;
+    }
 #endif
     logfile << endl;
   }

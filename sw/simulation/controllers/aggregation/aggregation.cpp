@@ -7,21 +7,19 @@
 using namespace std;
 aggregation::aggregation() : Controller()
 {
+  // Initial values
   moving = false;
+  moving_timer = rg.uniform_int(0, timelim);
   v_x_ref = rg.gaussian_float(0.0, 1.0);
   v_y_ref = rg.gaussian_float(0.0, 1.0);
-  string p = param->policy();
-  if (!strcmp(p.c_str(), "")) {
-    motion_p = {0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5};
-    // motion_p = {0.991355, 0.984845, 0.007304, 0.000783, 0.004238, 0.001033, 0.007088};
-    // motion_p = {1.0, 0.0, 0.0, 0.0, 1.0, 0.14, 0.14};
-    // motion_p = {1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
-  } else {
-    motion_p = read_array(p);
-  }
+
+  // Control values
   timelim = 2.0 * param->simulation_updatefreq();
-  moving_timer = rg.uniform_int(0, timelim);
   vmean = 0.5;
+
+  // Policy
+  if (!strcmp(param->policy().c_str(), "")) { motion_p.assign(7, 0.5); }
+  else { motion_p = read_array(param->policy()); }
 }
 
 void aggregation::get_velocity_command(const uint16_t ID, float &v_x, float &v_y)
