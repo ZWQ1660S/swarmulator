@@ -18,7 +18,7 @@ Environment::Environment(void)
   mtx_env.lock();
   define_food(100);
   define_beacon(0., 0.);
-  nest = 8;
+  nest = 15; //rg.uniform_int(0,15);
   mtx_env.unlock();
 }
 
@@ -120,6 +120,7 @@ void Environment::grab_food(uint64_t food_ID)
 {
   float lim = limits();
   mtx_env.lock();
+  // uncomment one of the two line below
   // food.erase(food.begin() + food_ID); // Use this to grab without replacement
   food[food_ID] = {rg.uniform_float(-lim, lim), rg.uniform_float(-lim, lim)}; // Use this to grab with replacement
   mtx_env.unlock();
@@ -135,12 +136,14 @@ void Environment::drop_food()
 void Environment::eat_food(float amount)
 {
   mtx_env.lock();
-  if (nest > amount) { nest -= amount; }
+  // if (nest > amount) {
+  nest -= amount;
+  // }
   mtx_env.unlock();
 }
 
 void Environment::loop()
 {
-  float rate = (0.01 / param->simulation_updatefreq()) * s.size();
+  float rate = (0.001 / param->simulation_updatefreq()) * s.size();
   eat_food(rate);
 }

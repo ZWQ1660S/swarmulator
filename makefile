@@ -53,7 +53,7 @@ SOURCES_C +=  $(shell find $(AGNT_INC) -name *.c -print)
 INC_DIRS += $(shell find $(AGNT_INC) -type d)
 
 ### External libraries
-INC_DIRS += $(shell find $(TORCH_LIB_HOME) -type d) ## Add torchlib include folder, if present
+# INC_DIRS += $(shell find $(TORCH_LIB_HOME) -type d) ## Add torchlib include folder, if present
 
 # Prepare includes
 INC_PARAMS = $(foreach d, $(INC_DIRS), -I$d) # Each include folder must have a -I before it

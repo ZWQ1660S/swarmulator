@@ -64,7 +64,7 @@ void main_simulation_thread(int argc, char *argv[], std::string id)
     std::vector<float> x0 = rg.uniform_float_vector(nagents, st[1] - 0.1, st[1] + 0.1);
     std::vector<float> y0 = rg.uniform_float_vector(nagents, st[0] - 0.1, st[0] + 0.1);
 #else
-    float spread = environment.limits(); // default // TODO: Spread randomly within an arbitray arena
+    float spread = 1.0; //environment.limits(); // default // TODO: Spread randomly within an arbitray arena
     std::vector<float> x0 = rg.uniform_float_vector(nagents, -spread, spread);
     std::vector<float> y0 = rg.uniform_float_vector(nagents, -spread, spread);
 #endif
@@ -96,7 +96,8 @@ void main_simulation_thread(int argc, char *argv[], std::string id)
 #endif
       // Runtime finish evolution
       if (param->time_limit() > 0.0) {
-        if (simtime_seconds > param->time_limit()) { // Quit after a certain amount of time
+        if (simtime_seconds > param->time_limit() || evaluate_fitness() < 0
+            || evaluate_fitness() > 30) { // Quit after a certain amount of time
           mtx.lock(); // Done
           mtx_env.lock();
           terminalinfo::debug_msg("Sending message");
