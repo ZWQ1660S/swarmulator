@@ -60,7 +60,7 @@ void forage::get_velocity_command(const uint16_t ID, float &v_x, float &v_y)
     if (timer == 1) { // Go explore, change direction every new timer instance
       v_x_ref = vmean;
       v_y_ref = wrapToPi_f(rg.gaussian_float(0., 0.2));
-      // environment.eat_food(0.2);
+      environment.eat_food(0.1);
     }
     uint16_t ID_food; // for sim purposes, used to delete the correct food item once grabbed
     if (holds_food) {

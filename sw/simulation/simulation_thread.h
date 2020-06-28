@@ -96,8 +96,7 @@ void main_simulation_thread(int argc, char *argv[], std::string id)
 #endif
       // Runtime finish evolution
       if (param->time_limit() > 0.0) {
-        if (simtime_seconds > param->time_limit() || evaluate_fitness() < 0
-            || evaluate_fitness() > 30) { // Quit after a certain amount of time
+        if (simtime_seconds > param->time_limit() || evaluate_fitness() < 0) { // Quit after a certain amount of time
           mtx.lock(); // Done
           mtx_env.lock();
           terminalinfo::debug_msg("Sending message");
