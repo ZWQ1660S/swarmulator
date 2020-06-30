@@ -42,7 +42,7 @@ void forage::get_velocity_command(const uint16_t ID, float &v_x, float &v_y)
     v_y_ref = 0.5 * wrapToPi_f(v_y_ref); // gain on control
     if (br < 2 * rangesensor) { // Drop the food if you are in the vicinity of the nest
       choose = true;
-      state = environment.nest;
+      state = environment.nest - st + 15;
       keepbounded(state, 0, 30);
       st = int(state);
 #ifdef ESTIMATOR
@@ -50,8 +50,8 @@ void forage::get_velocity_command(const uint16_t ID, float &v_x, float &v_y)
       if (explore) {a = 1;} else {a = 0;}
       pr.update(ID, st, a);
 #endif
-      if (rg.bernoulli(1.0 - motion_p[st])) { explore = false; }
-      else { explore = true; }
+      if (rg.bernoulli(1.0 - motion_p[st])) { explore = false;}
+      else { explore = true;}
     }
   }
 
