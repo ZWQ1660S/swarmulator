@@ -47,7 +47,6 @@ void run_agent_simulation_step(const int &ID)
         mtx.unlock();
       } else { // Wall! --> Kill the dynamics
         mtx.lock(); //sync
-        std::cout << "wall" << std::endl;
         s.at(ID)->state[2] = 0.0; // v_x
         s.at(ID)->state[3] = 0.0; // v_y
         s.at(ID)->state[4] = 0.0; // a_x
