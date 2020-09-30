@@ -10,6 +10,7 @@
 #include "trigonometry.h"
 
 bool animation_running = false;
+
 /**
  * Main animation loop.
  * Takes care of drawing the agents in their corrective location.
@@ -27,10 +28,13 @@ void main_loop_function()
     glLoadIdentity();
 
     // Get current window size w.r.t. beginning
+    // Horizontal
     xrat = (float)param->window_width() / (float)glutGet(GLUT_WINDOW_WIDTH);
+    // Vertical
     yrat = (float)param->window_height() / (float)glutGet(GLUT_WINDOW_HEIGHT);
 
     zoom_scale = -(float)10 / (-(float)10 + (float)zoom);
+    // std::cout << zoom_scale << std::endl;
     glTranslatef(center_x, center_y, -10 + zoom);
 
     // Draw fixed one time objects
@@ -47,15 +51,21 @@ void main_loop_function()
         // Input: ID, p_x global, p_y global, orientation global
         drawer.agent(ID, s[ID]->state.at(0), s[ID]->state.at(1), s[ID]->orientation);
         // Input: ID, p_x global, p_y global, v_x global, v_y global
-        drawer.velocity_arrow(ID,  s[ID]->state.at(0), s[ID]->state.at(1), s[ID]->state.at(2), s[ID]->state.at(3));
+        drawer.velocity_arrow(ID,
+                              s[ID]->state.at(0), s[ID]->state.at(1), // positions
+                              s[ID]->state.at(2), s[ID]->state.at(3)); // velocities
       }
     }
 
     // Swap buffers (color buffers, makes previous render visible)
     glutSwapBuffers();
 
-    user_interaction(); // Activate interactive functions (mouse + keyboard), important: use this before draw functions!
-  } else { // Close window
+    // Activate interactive functions (mouse + keyboard)
+    // Important: use this before draw functions!
+    user_interaction();
+
+  } else {
+    // Close window
     glutDestroyWindow(glutGetWindow());
   }
 }

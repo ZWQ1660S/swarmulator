@@ -7,6 +7,7 @@
 #include <mutex>
 #include "terminalinfo.h"
 #include "agent_thread.h"
+#include "auxiliary.h"
 
 /** Compatibility with old GLUT for mapping the mouse wheel
  * http://iihm.imag.fr/blanch/software/glut-macosx/
@@ -29,7 +30,7 @@ float pointer_x, pointer_y;
 float xrat = 1.0;
 float yrat = 1.0;
 bool paused = false;
-bool mouse_motion = false;
+bool drag_motion = false;
 
 /**
  * @brief keyboard_callback reads keyboard commands from the animation window of Swarmulator.
@@ -82,14 +83,35 @@ void keyboard_callback(unsigned char key, __attribute__((unused)) int a, __attri
         mtx.lock();
       }
       break;
-    case 'a': // Draw and simulate a new agent, initialized at the current pointer position
+
+    case 'a':
+      // Draw and simulate a new agent
+      // Initialized at the current pointer
+
+      // If the simulation is running then we do it
+      // if in pause then we will skip
       if (!paused) {
+        // Info message
         terminalinfo::info_msg("Drawing new agent.");
+
+        // Define a random generator for a random orientation
         random_generator rg;
-        std::vector<float> states = {pointer_y, pointer_x, 0.0, 0.0, 0.0, 0.0, rg.uniform_float(-M_PI, M_PI), 0.0}; // Initial positions/states
+
+        // Define initial state
+        std::vector<float> states = {
+          pointer_x,  // Position x (horizontal)
+          pointer_y,  // Position y (vertical)
+          0.0, 0.0, // Velocity
+          0.0, 0.0, // Accelerations
+          rg.uniform_float(-M_PI, M_PI), // Random orientation
+          0.0
+        };
+
+        // Create a new agent
         create_new_agent(s.size(), states);
         break;
       }
+
     case 'm': // Toggle the real time parameter between 1 and default, so as to better understand what's going on
       terminalinfo::info_msg("Toggle realtime factor between 1 and the specified value.");
       if (param->simulation_realtimefactor() != 1) {
@@ -114,19 +136,10 @@ void keyboard_callback(unsigned char key, __attribute__((unused)) int a, __attri
   }
 }
 
-/**
- * Detects the mouse motion and adjusts the center of the animation
- *
- * @param x Pointer location in the animation window along x
- * @param y Pointer location in the animation window along y
- */
-void mouse_motion_callback(int x, int y)
+// Returns the pointer location adjusted for everything
+float pointer_location(int x, float window_width, float rat, float center)
 {
-  // Move the center
-  if (mouse_motion) {
-    center_x += param->mouse_drag_speed() / zoom_scale * ((float)x / (float)glutGet(GLUT_WINDOW_WIDTH) - sx);
-    center_y += param->mouse_drag_speed() / zoom_scale * (-(float)y / (float)glutGet(GLUT_WINDOW_HEIGHT) - sy);
-  }
+  return ((float)x / window_width * 8. - 4.) / (zoom_scale * rat) - center;
 }
 
 /**
@@ -138,8 +151,41 @@ void mouse_motion_callback(int x, int y)
  */
 void mouse_motion_callback_passive(int x, int y)
 {
-  pointer_x = ((float)x / (float)glutGet(GLUT_WINDOW_WIDTH) * 8. - 4.) / (zoom_scale * xrat) - center_x;
-  pointer_y = -((float)y / (float)glutGet(GLUT_WINDOW_HEIGHT) * 8. - 4.) / (zoom_scale * yrat) - center_y;
+  // Horizontal position
+  pointer_x = pointer_location(x,
+                               (float)glutGet(GLUT_WINDOW_WIDTH),
+                               xrat, center_x);
+
+  // Vertical position
+  pointer_y = -pointer_location(y,
+                                (float)glutGet(GLUT_WINDOW_HEIGHT),
+                                yrat, center_y);
+}
+
+/**
+ * Detects the mouse motion and adjusts the center of the animation
+ *
+ * @param x Pointer location in the animation window along x
+ * @param y Pointer location in the animation window along y
+ */
+void mouse_motion_callback(int x, int y)
+{
+  // Update pointer positions
+  mouse_motion_callback_passive(x, y);
+
+  // Move the center-point of the animation
+  // if we detect a dragging motion
+  if (drag_motion) {
+    // Determine slide level
+    float x_slide = (float)x / (float)glutGet(GLUT_WINDOW_WIDTH)  - sx;
+    float y_slide =  -(float)y / (float)glutGet(GLUT_WINDOW_HEIGHT) - sy;
+
+    // Horizontal position
+    center_x += param->mouse_drag_speed() * x_slide / zoom_scale ;
+    // Vertical position
+    center_y += param->mouse_drag_speed() * y_slide / zoom_scale ;
+
+  }
 }
 
 /**
@@ -154,47 +200,52 @@ void mouse_motion_callback_passive(int x, int y)
 float wall_x_0, wall_y_0;
 void mouse_click_callback(int button, int state, int x, int y)
 {
-  // Click - left
+  // Click - left (press down)
+  // If detected this will set the values of sx and sy as the ratio
+  // along the screen where the mouse has been clicked.
   if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
     // Position on window in percentage
-    sx = (float)x / (float)glutGet(GLUT_WINDOW_WIDTH);
-    sy = -(float)y / (float)glutGet(GLUT_WINDOW_HEIGHT);
-    mouse_motion = true;
+    sx = (float)x / (float)glutGet(GLUT_WINDOW_WIDTH); // Horizontal
+    sy = -(float)y / (float)glutGet(GLUT_WINDOW_HEIGHT); // Vertical
+    drag_motion = true;
   }
 
+  // Click - left (release)
+  // Stop the mouse motion
   if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
-    mouse_motion = false;
+    drag_motion = false;
   }
 
   // Click - right (press down)
+  // Use this to start the position of a new wall
   if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN) {
-    // Start position of the new wall
-    wall_x_0 = pointer_x;
-    wall_y_0 = pointer_y;
+    // Starting position of the new wall
+    wall_x_0 = pointer_x + sx; // Horizontal
+    wall_y_0 = pointer_y + sy; // Vertical
   }
 
   // Click - right (release)
   if (button == GLUT_RIGHT_BUTTON && state == GLUT_UP) {
-    // End position of the new wall
-    float wall_x_1 = ((float)x / (float)glutGet(GLUT_WINDOW_WIDTH) * 8. - 4.) / (zoom_scale * xrat) - center_x;
-    float wall_y_1 = -((float)y / (float)glutGet(GLUT_WINDOW_HEIGHT) * 8. - 4.) / (zoom_scale * yrat) - center_y;
-    // Generate new wall
+
+    // Store the end position of the new wall
+    float wall_x_1 = pointer_x + sx; // Horizontal
+    float wall_y_1 = pointer_y + sy; // Vertical
+
+    // Create the new wall
     environment.add_wall(wall_x_0, wall_y_0, wall_x_1, wall_y_1);
   }
 
-  // Zoom wheel
+  // Scroll wheel (zoom)
+  // We detect the scroll as up or down and incremet/decrement
+  // the zoom accordingly
   if (button == GLUT_WHEEL_UP) {
     zoom += param->mouse_zoom_speed();
   } else if (button == GLUT_WHEEL_DOWN) {
     zoom -= param->mouse_zoom_speed();
   }
 
-  // Guard on too much / too little zoom
-  if (zoom > 9) {
-    zoom = 9;
-  } else if (zoom < -90) {
-    zoom = -90;
-  }
+  // Place a guard on too much / too little zoom
+  keepbounded<float>(zoom, -90., 9.);
 }
 
 /**
@@ -253,13 +304,24 @@ void psi_callback_up(unsigned char key, int x, int y)
  */
 void user_interaction()
 {
-  glutMotionFunc(mouse_motion_callback);
+  // Detect the position of the cursor when passive
   glutPassiveMotionFunc(mouse_motion_callback_passive);
+
+  // Detect the position of the cursor when active (clicked)
+  glutMotionFunc(mouse_motion_callback);
+  // std::cout << pointer_x << " " << pointer_y << std::endl;
+
+  // Run mouse control functions (drag, walls, etc.)
   glutMouseFunc(mouse_click_callback);
+
+  // Run keyboard control functions
+  glutKeyboardFunc(keyboard_callback);
+
+  // Run functions to control agent 0
   glutSpecialFunc(catchKey_arrow);
   glutSpecialUpFunc(catckKey_arrow_up);
-  glutKeyboardFunc(keyboard_callback);
   glutKeyboardUpFunc(psi_callback_up);
+
 }
 
 #endif /* USER_INTERACTION_H */
