@@ -21,12 +21,16 @@ class draw
 public:
   /******* General openGL functions ********/
 
+  void set_color_white(const float intensity);
+
+  void make_circle_coordinates(const float r, const int precision);
+
   /**
    * Draw a simple triangle of size scl
    *
    * @param s Scale of the triangle
    */
-  void triangle(const float &s);
+  void triangle(const float &s, const float &orientation);
 
   /**
    * Draw a red circle of radius r
@@ -93,7 +97,7 @@ public:
    * @param y The y position of the robot
    * @param orientation The orientation of the robot
    */
-  void agent(const uint16_t &ID, const float &x, const float &y, const float &orientation);
+  void agent(const uint16_t &ID, const float x, const float y, const float &orientation);
 
   /**
    * Draw a line showing the velocity of the agent

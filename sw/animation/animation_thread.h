@@ -102,6 +102,11 @@ void main_animation_thread()
   glutCreateWindow("Swarmulator");
   glutIdleFunc(main_loop_function);
   GL_Setup(param->window_width(), param->window_height()); // Set up window parameters
+
+  float w = (float)param->window_width() / 2.0f;
+  float h = (float)param->window_height() / 2.0f;
+
+  glOrtho(-w, w, -h, h, -1.0, 1.0);
   glutMainLoop(); // Initiate main drawing loop
 }
 

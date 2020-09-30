@@ -61,6 +61,5 @@ vector<float> particle_oriented::state_update(vector<float> state)
 void particle_oriented::animation()
 {
   draw d;
-
-  d.triangle(param->scale());
+  d.triangle(param->scale(), orientation);
 }

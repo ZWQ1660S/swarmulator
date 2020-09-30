@@ -3,13 +3,13 @@
   <!-- Simulation -->
   <simulation_updatefreq>20</simulation_updatefreq>
   <simulation_realtimefactor>300</simulation_realtimefactor>
-  <time_limit>500</time_limit>
+  <time_limit>0</time_limit>
   <!-- (seconds). Use time_limit > 0 to set a limit. If = 0, then the simulation runs indefinitely. -->
   <environment>square20</environment>
   <!-- See the folder conf/environments/ for available environments. 
        Create your own or use "random" to generate a random map at runtime -->
   <!-- Animation -->
-  <window_width>800</window_width>
+  <window_width>5000</window_width>
   <window_height>800</window_height>
   <scale>0.2</scale>
   <mouse_drag_speed>0.3</mouse_drag_speed>
@@ -20,8 +20,8 @@
   <!-- Logger -->
   <logger_updatefreq>2</logger_updatefreq>
   <!-- Additional parameters -->
-  <policy>conf/policies/temp.txt</policy>
-  <fitness>food</fitness>
+  <policy></policy>
+  <fitness>aggregation_clusters</fitness>
   <pr_states>16</pr_states>
   <!-- set to 0 to turn of estimator -->
   <pr_actions>8</pr_actions>
